@@ -15,26 +15,26 @@ const Summary: FC<SummaryProps> = async () => {
     <FlexRow rootClassName="mb-2!" justify="between" aligns="middle">
       <FlexCol span={6}>
         <Card>
-          <Paragraph>$11.000.000</Paragraph>
-          <Paragraph>{t("income")}</Paragraph>
+          <Paragraph rootClassName="mb-3!" variant="success" size={20}>$11.000.000</Paragraph>
+          <Paragraph variant="secondary">{t("income")}</Paragraph>
         </Card>
       </FlexCol>
       <FlexCol span={6}>
         <Card>
-          <Paragraph>$8.000.000</Paragraph>
-          <Paragraph>{t("expenese")}</Paragraph>
+          <Paragraph rootClassName="mb-3!" variant="danger" size={20}>$8.000.000</Paragraph>
+          <Paragraph variant="secondary">{t("expenses")}</Paragraph>
         </Card>
       </FlexCol>
       <FlexCol span={6}>
         <Card>
-          <Paragraph>$3.000.000</Paragraph>
-          <Paragraph>{t("balance")}</Paragraph>
+          <Paragraph rootClassName="mb-3!" variant="warning" size={20}>$3.000.000</Paragraph>
+          <Paragraph variant="secondary">{t("balance")}</Paragraph>
         </Card>
       </FlexCol>
       <FlexCol span={6}>
         <Card>
-          <Paragraph>1.500</Paragraph>
-          <Paragraph>{t("transactions")}</Paragraph>
+          <Paragraph rootClassName="mb-3!" size={20}>1.500</Paragraph>
+          <Paragraph variant="secondary">{t("transactions")}</Paragraph>
         </Card>
       </FlexCol>
     </FlexRow>

@@ -2,7 +2,7 @@
   "dashboard": {
     "summary": {
       "income": "Thu nhập",
-      "expenese": "Chi tiêu",
+      "expenses": "Chi tiêu",
       "balance": "Số dư",
       "transactions": "Giao dịch"
     }

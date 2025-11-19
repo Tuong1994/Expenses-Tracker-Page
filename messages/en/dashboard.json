@@ -2,7 +2,7 @@
   "dashboard": {
     "summary": {
     "income": "Income",
-    "expenese": "Expenese",
+    "expenses": "Expenses",
     "balance": "Balance",
     "transactions": "Transactions"
   }
