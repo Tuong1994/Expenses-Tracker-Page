@@ -1,0 +1,10 @@
+{
+  "dashboard": {
+    "summary": {
+    "income": "Income",
+    "expenese": "Expenese",
+    "balance": "Balance",
+    "transactions": "Transactions"
+  }
+  }
+}

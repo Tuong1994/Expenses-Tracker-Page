@@ -1,0 +1,10 @@
+{
+  "dashboard": {
+    "summary": {
+      "income": "Thu nhập",
+      "expenese": "Chi tiêu",
+      "balance": "Số dư",
+      "transactions": "Giao dịch"
+    }
+  }
+}
