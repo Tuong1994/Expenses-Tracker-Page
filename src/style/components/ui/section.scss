@@ -1,6 +1,6 @@
 .section {
   padding: $p-5;
-  @include respond(mdPhone) {
+  @include respond(laptop) {
     padding: $p-5 $p-2;
   }
 }

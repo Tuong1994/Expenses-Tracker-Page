@@ -10,6 +10,18 @@
         "vn": "Tiếng Việt"
       }
     },
+    "category": {
+      "mortgageRent": "Thế chấp / Tiền thuê nhà",
+      "food": "Thực phẩm",
+      "utilities": "Tiện ích",
+      "bills": "Hóa đơn",
+      "shopping": "Mua sắm",
+      "transportation": "Giao thông",
+      "insurance": "Bảo hiểm",
+      "healthCare": "Chăm sóc sức khỏe",
+      "clothing": "Quần áo",
+      "others": "Khác"
+    },
     "form": {
       "label": {
         "account": "Tài khoản",
@@ -82,6 +94,11 @@
         "address": "Địa chỉ",
         "image": "Hình ảnh",
         "status": "Trạng thái",
+        "date": "Ngày",
+        "amount": "Số tiền",
+        "category": "Danh mục",
+        "paymentMode": "Phương thức thanh toán",
+        "description": "Mô tả",
         "createdAt": "Ngày tạo",
         "updatedAt": "Ngày cập nhật"
       }

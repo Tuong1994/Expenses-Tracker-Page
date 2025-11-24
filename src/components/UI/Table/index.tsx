@@ -100,7 +100,7 @@ const Table = <M extends object>(
 
   const themeClassName = `table-${theme}`;
 
-  const mainClassName = utils.formatClassName("table", colorClassName, themeClassName, rootClassName);
+  const mainClassName = utils.formatClassName("ui-table", colorClassName, themeClassName, rootClassName);
 
   useEffect(() => {
     if (!showRemove) handleCancelSelect();

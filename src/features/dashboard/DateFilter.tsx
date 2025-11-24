@@ -15,12 +15,12 @@ const DateFilter: FC<DateFilterProps> = () => {
     <Space>
       <DatePicker
         placement="right"
-        rootStyle={{ width: "200px" }}
+        rootStyle={{ width: "120px" }}
         color={layoutValue.layoutColor as ControlColor}
       />
       <DatePicker
         placement="right"
-        rootStyle={{ width: "200px" }}
+        rootStyle={{ width: "120px" }}
         color={layoutValue.layoutColor as ControlColor}
       />
     </Space>

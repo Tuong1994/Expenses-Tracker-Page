@@ -5,6 +5,16 @@
       "expenses": "Chi tiêu",
       "balance": "Số dư",
       "transactions": "Giao dịch"
+    },
+    "totalExpenses": {
+      "title": "Tổng chi tiêu"
+    },
+    "account": {
+      "balance": "Tài khoản - Số dư",
+      "incomeExpense": "Thu nhập - Chi tiêu"
+    },
+    "recentTransactions": {
+      "title": "Giao dịch gần đây"
     }
   }
 }

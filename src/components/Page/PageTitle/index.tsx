@@ -12,11 +12,11 @@ interface PageTitleProps {
 
 const PageTitle: FC<PageTitleProps> = ({ title = "Title", rightItem }) => {
   return (
-    <FlexRow rootClassName="mb-2!" justify="between" aligns="middle">
-      <FlexCol>
+    <FlexRow rootClassName="mb-5!" justify="between" aligns="middle">
+      <FlexCol xs={24}>
         <Title level={4}>{title}</Title>
       </FlexCol>
-      <FlexCol>{rightItem}</FlexCol>
+      <FlexCol xs={24}>{rightItem}</FlexCol>
     </FlexRow>
   );
 };

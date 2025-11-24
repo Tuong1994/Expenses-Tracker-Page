@@ -10,6 +10,18 @@
         "vn": "Vietnamese"
       }
     },
+    "category": {
+      "mortgageRent": "Mortgage / Rent",
+      "food": "Food",
+      "utilities": "Utilities",
+      "bills": "Bills",
+      "shopping": "Shopping",
+      "transportation": "Transportation",
+      "insurance": "Insurance",
+      "healthCare": "Health care",
+      "clothing": "Clothing",
+      "others": "Others"
+    },
     "form": {
       "label": {
         "account": "Account",
@@ -82,6 +94,11 @@
         "address": "Address",
         "image": "Image",
         "status": "Status",
+        "date": "Date",
+        "amount": "Amount",
+        "category": "Category",
+        "paymentMode": "Payment mode",
+        "description": "Description",
         "createdAt": "Created date",
         "updatedAt": "Updated date"
       }

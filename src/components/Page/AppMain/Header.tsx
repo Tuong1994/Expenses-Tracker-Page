@@ -15,7 +15,7 @@ const Header: FC<HeaderProps> = () => {
         <FlexCol>
           <div className="w-28 h-10 bg-gray-300 rounded"></div>
         </FlexCol>
-        <FlexCol xs={10} span={1}>
+        <FlexCol xs={6} md={4} lg={2} span={1}>
           <LocaleSwitcher />
         </FlexCol>
       </FlexRow>

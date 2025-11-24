@@ -5,5 +5,6 @@ import useOverflow from "./features/useOverflow";
 import useRender from "./features/useRender";
 import useLang from "./features/useLang";
 import useFormRule from "./features/useFormRule";
+import useMounted from "./features/useMounted";
 
-export { useClickOutside, useDetectBottom, useViewpoint, useOverflow, useRender, useLang, useFormRule };
+export { useClickOutside, useDetectBottom, useViewpoint, useOverflow, useRender, useLang, useFormRule, useMounted };

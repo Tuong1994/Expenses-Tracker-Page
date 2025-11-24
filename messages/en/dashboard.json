@@ -1,10 +1,20 @@
 {
   "dashboard": {
     "summary": {
-    "income": "Income",
-    "expenses": "Expenses",
-    "balance": "Balance",
-    "transactions": "Transactions"
-  }
+      "income": "Income",
+      "expenses": "Expenses",
+      "balance": "Balance",
+      "transactions": "Transactions"
+    },
+    "totalExpenses": {
+      "title": "Total expenses"
+    },
+    "account": {
+      "balance": "Account - Balance",
+      "incomeExpense": "Income - Expense"
+    },
+    "recentTransactions": {
+      "title": "Recent transactions"
+    }
   }
 }

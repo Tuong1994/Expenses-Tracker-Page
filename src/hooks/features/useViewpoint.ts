@@ -28,7 +28,12 @@ const useViewpoint = () => {
 
   const { SM_PHONE, MD_PHONE, LG_PHONE, SM_TABLET, MD_TABLET, LG_TABLET, LAPTOP } = breakpoint;
 
-  const [screenWidth, setScreenWidth] = useState<number>(window.innerWidth);
+  const [screenWidth, setScreenWidth] = useState<number>(0);
+
+  useEffect(() => {
+    if(typeof window === "undefined") return;
+    setScreenWidth(window.innerWidth)
+  }, [])
 
   useEffect(() => {
     const handleResize = () => setScreenWidth(window.innerWidth);

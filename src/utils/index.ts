@@ -19,6 +19,14 @@ const utils = {
   formatClassName: (...classNames: string[]) => {
     return classNames.filter((name) => name).join(" ");
   },
+
+  formatCurrency: (amount: number) => {
+    const fomatter = new Intl.NumberFormat('vn', {
+      style: 'currency',
+      currency: 'VND'
+    }) 
+    return fomatter.format(amount)
+  }
 };
 
 export default utils;

@@ -4,7 +4,7 @@ import { FC } from "react";
 import { FaChartLine, FaDollarSign } from "react-icons/fa";
 import { MenuItems } from "@/components/UI/Layout/Menu/type";
 import { Layout, Typography } from "@/components/UI";
-import { Link } from "@/i18n/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
 import { routePaths } from "@/common/constant/routers";
 import { useTranslations } from "next-intl";
 
@@ -38,7 +38,7 @@ const SideMenu: FC<SideMenuProps> = () => {
     },
   ];
 
-  return <Menu type="vertical" items={items} />;
+  return <Menu type="vertical" items={items} defaultActiveId={["dashboard"]} />;
 };
 
 export default SideMenu;
