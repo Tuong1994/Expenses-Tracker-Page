@@ -14,7 +14,7 @@ const PageTitle: FC<PageTitleProps> = ({ title = "Title", rightItem }) => {
   return (
     <FlexRow rootClassName="mb-5!" justify="between" aligns="middle">
       <FlexCol xs={24}>
-        <Title level={4}>{title}</Title>
+        <Title level={4} rootClassName="mb-0!">{title}</Title>
       </FlexCol>
       <FlexCol xs={24}>{rightItem}</FlexCol>
     </FlexRow>

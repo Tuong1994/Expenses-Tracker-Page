@@ -1,0 +1,14 @@
+{
+  "transactions": {
+    "filter": {
+      "title": "Filter",
+      "category": "Category",
+      "cashflow": "Cashflow",
+      "payment": "Payment mode",
+      "amount": "Amount"
+    },
+    "actions": {
+      "add": "Add transactions"
+    }
+  }
+}

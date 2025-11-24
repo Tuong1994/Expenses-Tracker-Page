@@ -13,7 +13,10 @@ const HomePage: NextPage = async () => {
 
   return (
     <>
-      <PageTitle title={t("common.menu.dashboard")} rightItem={<DateFilter />} />
+      <PageTitle
+        title={t("common.menu.dashboard")}
+        rightItem={<DateFilter className="!sm:w-full !md:w-full !lg:w-2xl !xl:w-3xl" />}
+      />
       <Summary />
       <TotalExpenses />
       <AccountBalance />

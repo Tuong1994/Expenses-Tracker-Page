@@ -44,7 +44,13 @@
         "ward": "Ward",
         "note": "Note",
         "status": "Status",
-        "optional": "Optional"
+        "optional": "Optional",
+        "income": "Income",
+        "expense": "Expense",
+        "credit": "Credit card",
+        "cash": "cash",
+        "min": "Min",
+        "max": "Max"
       },
       "placeholder": {
         "enter": "Enter infomation",

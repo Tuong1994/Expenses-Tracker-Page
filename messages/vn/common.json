@@ -44,7 +44,13 @@
         "ward": "Phường/Xã",
         "note": "Ghi chú",
         "status": "Trạng thái",
-        "optional": "Không bắt buộc"
+        "optional": "Không bắt buộc",
+        "income": "Thu nhập",
+        "expense": "Chi tiêu",
+        "credit": "Thẻ tín dụng",
+        "cash": "Tiền mặt",
+        "min": "Tối thiểu",
+        "max": "Tối đa"
       },
       "placeholder": {
         "enter": "Nhập thông tin",

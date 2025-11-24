@@ -1,24 +1,35 @@
 "use client";
 
-import { FC } from "react";
-import { Card, Typography, Table } from "@/components/UI";
+import { FC, useState } from "react";
 import { Columns, TableColor } from "@/components/UI/Table/type";
 import { Transaction } from "@/services/transactions/type";
+import { Flex, Typography, Table, Card, Button, Space, Drawer } from "@/components/UI";
+import { HiAdjustmentsHorizontal } from "react-icons/hi2";
 import { useTranslations } from "next-intl";
+import { useViewpoint } from "@/hooks";
+import TransactionsListFilter from "./Filter";
 import useLayout from "@/components/UI/Layout/useLayout";
 import moment from "moment";
 import utils from "@/utils";
 
+const { FlexRow, FlexCol } = Flex;
+
 const { Paragraph } = Typography;
 
-interface RecentTransactionsProps {}
+interface TransactionsListProps {}
 
-const RecentTransactions: FC<RecentTransactionsProps> = () => {
+const TransactionsList: FC<TransactionsListProps> = () => {
+  const [openFilter, setOpenFilter] = useState<boolean>(false);
+
   const t = useTranslations();
+
+  const { isPhone, isTablet } = useViewpoint();
 
   const { layoutValue } = useLayout();
 
   const { layoutColor } = layoutValue;
+
+  const isMobile = isPhone || isTablet;
 
   const dataSource: Transaction[] = [
     {
@@ -86,14 +97,42 @@ const RecentTransactions: FC<RecentTransactionsProps> = () => {
     },
   ];
 
+  const filterHead = <Paragraph size={16}>
+    {t('transactions.filter.title')}
+  </Paragraph>
+
+  const handleTriggerDrawer = () => setOpenFilter(!openFilter);
+
   return (
-    <Card>
-      <Paragraph size={16} rootClassName="mb-5!">
-        {t("dashboard.recentTransactions.title")}
-      </Paragraph>
-      <Table<Transaction> color={layoutColor as TableColor} dataSource={dataSource} columns={columns} />
-    </Card>
+    <>
+      <FlexRow justify="between">
+        <FlexCol xs={24} span={18}>
+          {isMobile && (
+            <Space justify="end">
+              <Button color={layoutColor} rootClassName="mb-5!" onClick={handleTriggerDrawer}>
+                <HiAdjustmentsHorizontal size={20} />
+              </Button>
+            </Space>
+          )}
+          <Table<Transaction>
+            hasRowSelection
+            hasPagination
+            columns={columns}
+            dataSource={dataSource}
+            color={layoutColor as TableColor}
+          />
+        </FlexCol>
+        <FlexCol xs={0} span={6}>
+          <Card head={filterHead}>
+            <TransactionsListFilter />
+          </Card>
+        </FlexCol>
+      </FlexRow>
+      <Drawer head={filterHead} open={openFilter} onClose={handleTriggerDrawer}>
+        <TransactionsListFilter />
+      </Drawer>
+    </>
   );
 };
 
-export default RecentTransactions;
+export default TransactionsList;

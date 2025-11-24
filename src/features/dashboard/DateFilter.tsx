@@ -1,29 +1,29 @@
 "use client";
 
 import { FC } from "react";
-import { Space } from "@/components/UI";
+import { Flex } from "@/components/UI";
 import { DatePicker } from "@/components/Control";
 import { ControlColor } from "@/components/Control/type";
 import useLayout from "@/components/UI/Layout/useLayout";
 
-interface DateFilterProps {}
+const { FlexRow, FlexCol } = Flex;
 
-const DateFilter: FC<DateFilterProps> = () => {
+interface DateFilterProps {
+  className?: string;
+}
+
+const DateFilter: FC<DateFilterProps> = ({ className }) => {
   const { layoutValue } = useLayout();
 
   return (
-    <Space>
-      <DatePicker
-        placement="right"
-        rootStyle={{ width: "120px" }}
-        color={layoutValue.layoutColor as ControlColor}
-      />
-      <DatePicker
-        placement="right"
-        rootStyle={{ width: "120px" }}
-        color={layoutValue.layoutColor as ControlColor}
-      />
-    </Space>
+    <FlexRow rootClassName={className} justify="between">
+      <FlexCol xs={24} md={12} lg={12} span={12}>
+        <DatePicker placement="right" color={layoutValue.layoutColor as ControlColor} />
+      </FlexCol>
+      <FlexCol xs={24} md={12} lg={12} span={12}>
+        <DatePicker placement="right" color={layoutValue.layoutColor as ControlColor} />
+      </FlexCol>
+    </FlexRow>
   );
 };
 
