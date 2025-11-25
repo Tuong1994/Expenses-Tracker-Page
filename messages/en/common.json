@@ -50,7 +50,13 @@
         "credit": "Credit card",
         "cash": "cash",
         "min": "Min",
-        "max": "Max"
+        "max": "Max",
+        "category": "Category",
+        "cashflow": "Cashflow",
+        "payment": "Payment mode",
+        "amount": "Amount",
+        "date": "Date",
+        "description": "Description"
       },
       "placeholder": {
         "enter": "Enter infomation",

@@ -1,7 +1,7 @@
 "use client";
 
 import { FC } from "react";
-import { Space, Flex, Typography, Divider } from "@/components/UI";
+import { Space, Flex, Typography, Divider, Button } from "@/components/UI";
 import { Input, Select, CheckBox } from "@/components/Control";
 import { ControlColor } from "@/components/Control/type";
 import DateFilter from "@/features/dashboard/DateFilter";
@@ -41,7 +41,7 @@ const TransactionsListFilter: FC<TransactionsListFilterProps> = () => {
       </Space>
       <Divider />
       <Paragraph rootClassName="mb-5!" variant="secondary">{t('amount')}</Paragraph>
-      <FlexRow>
+      <FlexRow rootClassName="mb-10!">
         <FlexCol span={12}>
           <Input label="Min" color={color} />
         </FlexCol>
@@ -49,6 +49,7 @@ const TransactionsListFilter: FC<TransactionsListFilterProps> = () => {
           <Input label="Max" color={color} />
         </FlexCol>
       </FlexRow>
+      <Button color={color} rootClassName="w-full!">{t('title')}</Button>
     </>
   );
 };

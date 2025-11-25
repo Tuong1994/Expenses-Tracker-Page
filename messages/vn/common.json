@@ -50,7 +50,13 @@
         "credit": "Thẻ tín dụng",
         "cash": "Tiền mặt",
         "min": "Tối thiểu",
-        "max": "Tối đa"
+        "max": "Tối đa",
+        "category": "Danh mục",
+        "cashflow": "Dòng tiền",
+        "payment": "Phương thức thanh toán",
+        "amount": "Số tiền",
+        "date": "Ngày",
+        "description": "Mô tả"
       },
       "placeholder": {
         "enter": "Nhập thông tin",

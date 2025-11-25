@@ -7,6 +7,9 @@
       "payment": "Payment mode",
       "amount": "Amount"
     },
+    "form": {
+      "title": "New transaction"
+    },
     "actions": {
       "add": "Add transactions"
     }

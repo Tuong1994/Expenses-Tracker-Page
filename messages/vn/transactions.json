@@ -7,6 +7,9 @@
       "payment": "Phương thức thanh toán",
       "amount": "Số tiền"
     },
+    "form": {
+      "title": "Giao dịch mới"
+    },
     "actions": {
       "add": "Thêm giao dịch"
     }
