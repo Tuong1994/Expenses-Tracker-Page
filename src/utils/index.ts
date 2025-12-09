@@ -1,3 +1,5 @@
+import moment from "moment";
+
 const utils = {
   uuid: () => {
     const s4 = () =>
@@ -21,12 +23,17 @@ const utils = {
   },
 
   formatCurrency: (amount: number) => {
-    const fomatter = new Intl.NumberFormat('vn', {
-      style: 'currency',
-      currency: 'VND'
-    }) 
-    return fomatter.format(amount)
-  }
+    const fomatter = new Intl.NumberFormat("vn", {
+      style: "currency",
+      currency: "VND",
+    });
+    return fomatter.format(amount);
+  },
+
+  formatDateValue: (date: Date | string, format = "YYYY-MM-DD") => {
+    const defaultDate = date ?? new Date();
+    return moment(defaultDate).format(format);
+  },
 };
 
 export default utils;

@@ -1,7 +1,9 @@
 import { requestManager } from "./manager";
-import { ApiBodyInit, ApiConfig, ApiResponse, ResponseError } from "./type";
+import { ApiConfig, ApiResponse, ResponseError } from "./type";
 
-const BASE_URL = process.env.API_URL;
+// const BASE_URL = process.env.NODE_ENV === "development" ? "http://localhost:5000/" : "";
+
+const BASE_URL = "http://localhost:5000/";
 
 const Method = {
   GET: "GET",
@@ -21,13 +23,11 @@ export const ApiResponseError = (status: number, error: any) => {
   return responseError;
 };
 
-const call = async <TBody extends ApiBodyInit, TData = any>(
-  config: ApiConfig<TBody>
-): Promise<ApiResponse<TData>> => {
+const call = async <TBody, TData = any>(config: ApiConfig<TBody>): Promise<ApiResponse<TData>> => {
   const { apiPath, method, body, auth, token, abortKey, options = {} } = config;
   let apiResponse: ApiResponse<TData> = defaultResponse();
   let controller: AbortController | null = null;
-  let finalBody: ApiBodyInit = body as any;
+  let finalBody = body as any;
   let res: Response;
   const url = `${BASE_URL}${apiPath}`;
   const headers: Record<string, string> = { ...(options.headers as any) };
@@ -53,8 +53,8 @@ const call = async <TBody extends ApiBodyInit, TData = any>(
     // ❗ Default: no-cache for mutations, cache for GET
     cache: method === Method.GET ? "force-cache" : "no-store",
     next: method === Method.GET ? { revalidate: 0 } : undefined, // ISR optional
-    body: method !== Method.GET ? finalBody : undefined,
     ...options,
+    body: method !== Method.GET ? finalBody : undefined,
   };
   if (abortKey) {
     controller = requestManager.create(abortKey);
@@ -89,26 +89,16 @@ const Get = <TData>(apiPath: string, abortKey?: string, options?: RequestInit) =
   return call<any, TData>({ method: Method.GET, apiPath, abortKey, options });
 };
 
-const Post = <TBody extends ApiBodyInit, TData>(
-  apiPath: string,
-  body: TBody,
-  abortKey?: string,
-  options?: RequestInit
-) => {
+const Post = <TBody, TData>(apiPath: string, body: TBody, abortKey?: string, options?: RequestInit) => {
   return call<TBody, TData>({ method: Method.POST, apiPath, body, abortKey, options });
 };
 
-const Put = <TBody extends ApiBodyInit, TData>(
-  apiPath: string,
-  body: TBody,
-  abortKey?: string,
-  options?: RequestInit
-) => {
+const Put = <TBody, TData>(apiPath: string, body: TBody, abortKey?: string, options?: RequestInit) => {
   return call<TBody, TData>({ method: Method.PUT, apiPath, body, abortKey, options });
 };
 
-const Delete = <TData>(apiPath: string, abortKey?: string, options?: RequestInit) => {
-  return call<any, TData>({ method: Method.DELETE, apiPath, abortKey, options });
+const Delete = <TBody, TData>(apiPath: string, body?: TBody, abortKey?: string, options?: RequestInit) => {
+  return call<any, TData>({ method: Method.DELETE, apiPath, body, abortKey, options });
 };
 
 const Fetch = { Get, Post, Put, Delete };

@@ -1,6 +1,54 @@
-export type ApiBodyInit = BodyInit | undefined;
+import { ELang, ESort } from "@/common/enum";
+import { EGender, ERole } from "./user/enum";
 
-export interface ApiConfig<T extends ApiBodyInit> {
+export type Paging<T> = {
+  totalItems: number;
+  page: number;
+  limit: number;
+  items: T[];
+};
+
+export type List<T> = {
+  totalItems: number;
+  items: T[];
+};
+
+export type ApiQuery = {
+  page?: number;
+  limit?: number;
+  keywords?: string;
+  langCode?: ELang;
+  sortBy?: ESort;
+
+  ids?: string;
+  userId?: string;
+  categoryId?: string;
+  subCategoryId?: string;
+  productId?: string;
+  cartId?: string;
+  orderId?: string;
+  shipmentId?: string;
+  commentId?: string;
+  rateId?: string;
+  likeId?: string;
+  imageId?: string;
+  cityId?: string;
+  cityCode?: string;
+  districtId?: string;
+  districtCode?: string;
+  wardId?: string;
+  wardCode?: string;
+
+  hasSub?: boolean;
+  hasCate?: boolean;
+  hasLike?: boolean;
+  convertLang?: boolean;
+  
+  role?: ERole;
+  gender?: EGender;
+};
+
+export interface ApiConfig<T> {
   method: string;
   apiPath: string;
   abortKey?: string;

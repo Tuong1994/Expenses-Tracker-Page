@@ -1,15 +1,29 @@
 import { NextPage } from "next";
 import { getTranslations } from "next-intl/server";
+import { getSummary } from "@/services/dashboard/api";
 import PageTitle from "@/components/Page/PageTitle";
 import Summary from "@/features/dashboard/Summary";
 import DateFilter from "@/features/dashboard/DateFilter";
 import TotalExpenses from "@/features/dashboard/TotalExpenses";
 import AccountBalance from "@/features/dashboard/AccountBalance";
-import withLocale from "@/libs/withLocale";
 import RecentTransactions from "@/features/dashboard/RecentTrasactions";
+import withLocale from "@/libs/withLocale";
+import utils from "@/utils";
 
-const HomePage: NextPage = async () => {
+interface DashboardPageProps {
+  searchParams: Promise<Record<string, string | undefined>>;
+}
+
+const DashboardPage: NextPage<DashboardPageProps> = async ({ searchParams }) => {
+  const params = await searchParams;
+
+  const startDate = params.startDate ?? utils.formatDateValue(new Date("2025-01-01"));
+
+  const endDate = params.endDate ?? utils.formatDateValue(new Date("2025-12-01"));
+
   const t = await getTranslations();
+
+  const summary = await getSummary({ startDate, endDate });
 
   return (
     <>
@@ -17,7 +31,7 @@ const HomePage: NextPage = async () => {
         title={t("common.menu.dashboard")}
         rightItem={<DateFilter className="!sm:w-full !md:w-full !lg:w-2xl !xl:w-3xl" />}
       />
-      <Summary />
+      <Summary summary={summary} />
       <TotalExpenses />
       <AccountBalance />
       <RecentTransactions />
@@ -25,4 +39,4 @@ const HomePage: NextPage = async () => {
   );
 };
 
-export default withLocale(HomePage);
+export default withLocale(DashboardPage);
