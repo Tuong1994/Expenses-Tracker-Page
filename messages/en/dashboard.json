@@ -15,6 +15,9 @@
     },
     "recentTransactions": {
       "title": "Recent transactions"
+    },
+    "error": {
+      "summary": "An error occurred during the data retrieval process"
     }
   }
 }

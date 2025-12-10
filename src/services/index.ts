@@ -67,10 +67,10 @@ const call = async <TBody, TData = any>(config: ApiConfig<TBody>): Promise<ApiRe
   } catch (error: any) {
     if (error.name === "AbortError") {
       if (abortKey) requestManager.abort(abortKey);
-      throw { ...apiResponse, success: false, error: ApiResponseError(-1, error) };
+      return { ...apiResponse, success: false, error: ApiResponseError(-1, error) };
     }
     // Network-level error → status is unknown (set 0)
-    throw { ...apiResponse, success: false, error: ApiResponseError(0, error) };
+    return { ...apiResponse, success: false, error: ApiResponseError(0, error) };
   }
   // Server responded but with an HTTP error (4xx/5xx)
   // → fetch resolved successfully, but res.ok is false.
@@ -79,7 +79,7 @@ const call = async <TBody, TData = any>(config: ApiConfig<TBody>): Promise<ApiRe
     try {
       errJson = await res.json();
     } catch {}
-    throw { ...apiResponse, success: false, error: ApiResponseError(res.status, errJson) };
+    return { ...apiResponse, success: false, error: ApiResponseError(res.status, errJson) };
   }
   const data = await res.json();
   return { ...apiResponse, success: true, data };

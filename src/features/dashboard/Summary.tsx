@@ -14,12 +14,18 @@ interface SummaryProps {
 }
 
 const Summary: FC<SummaryProps> = async ({ summary }) => {
-  const t = await getTranslations("dashboard.summary");
+  const t = await getTranslations("dashboard");
 
   const { data, success } = summary;
 
   if (!success) {
-    return <Card>There's been error while getting data</Card>;
+    return (
+      <Card rootClassName="mb-5!">
+        <Paragraph italic variant="secondary">
+          {t("error.summary")}
+        </Paragraph>
+      </Card>
+    );
   }
 
   return (
@@ -29,7 +35,7 @@ const Summary: FC<SummaryProps> = async ({ summary }) => {
           <Paragraph rootClassName="mb-3!" variant="success" size={20}>
             {utils.formatCurrency(data.totalIncome ?? 0)}
           </Paragraph>
-          <Paragraph variant="secondary">{t("income")}</Paragraph>
+          <Paragraph variant="secondary">{t("summary.income")}</Paragraph>
         </Card>
       </FlexCol>
       <FlexCol xs={24} md={12} lg={6} span={6}>
@@ -37,7 +43,7 @@ const Summary: FC<SummaryProps> = async ({ summary }) => {
           <Paragraph rootClassName="mb-3!" variant="danger" size={20}>
             {utils.formatCurrency(data.totalExpense ?? 0)}
           </Paragraph>
-          <Paragraph variant="secondary">{t("expenses")}</Paragraph>
+          <Paragraph variant="secondary">{t("summary.expenses")}</Paragraph>
         </Card>
       </FlexCol>
       <FlexCol xs={24} md={12} lg={6} span={6}>
@@ -45,7 +51,7 @@ const Summary: FC<SummaryProps> = async ({ summary }) => {
           <Paragraph rootClassName="mb-3!" variant="warning" size={20}>
             {utils.formatCurrency(data.totalBalance ?? 0)}
           </Paragraph>
-          <Paragraph variant="secondary">{t("balance")}</Paragraph>
+          <Paragraph variant="secondary">{t("summary.balance")}</Paragraph>
         </Card>
       </FlexCol>
       <FlexCol xs={24} md={12} lg={6} span={6}>
@@ -53,7 +59,7 @@ const Summary: FC<SummaryProps> = async ({ summary }) => {
           <Paragraph rootClassName="mb-3!" size={20}>
             {utils.formatCurrency(data.totalTransactions ?? 0)}
           </Paragraph>
-          <Paragraph variant="secondary">{t("transactions")}</Paragraph>
+          <Paragraph variant="secondary">{t("summary.transactions")}</Paragraph>
         </Card>
       </FlexCol>
     </FlexRow>

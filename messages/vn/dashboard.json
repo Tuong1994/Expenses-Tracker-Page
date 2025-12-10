@@ -15,6 +15,9 @@
     },
     "recentTransactions": {
       "title": "Giao dịch gần đây"
+    },
+    "error": {
+      "summary": "Đã xảy ra lỗi trong quá trình truy xuất dữ liệu"
     }
   }
 }
