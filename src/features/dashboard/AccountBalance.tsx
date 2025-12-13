@@ -4,83 +4,39 @@ import { FC } from "react";
 import { Flex, Card, Typography } from "@/components/UI";
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis } from "recharts";
 import { useTranslations } from "next-intl";
+import { ApiResponse } from "@/services/type";
+import { StatisticBalance } from "@/services/dashboard/type";
 
 const { Paragraph } = Typography;
 
 const { FlexRow, FlexCol } = Flex;
 
-interface AccountBalanceProps {}
+interface AccountBalanceProps {
+  balance: ApiResponse<StatisticBalance> | null;
+}
 
-const AccountBalance: FC<AccountBalanceProps> = () => {
-  const t = useTranslations('dashboard')
+const AccountBalance: FC<AccountBalanceProps> = ({ balance }) => {
+  const t = useTranslations("dashboard");
 
-  const dataArea = [
-    {
-      name: "Jun",
-      amount: 2400,
-    },
-    {
-      name: "Jul",
-      amount: 1398,
-    },
-    {
-      name: "Aug",
-      amount: 9800,
-    },
-    {
-      name: "Sep",
-      amount: 3908,
-    },
-    {
-      name: "Oct",
-      amount: 4800,
-    },
-    {
-      name: "Nov",
-      amount: 3800,
-    },
-  ];
+  const isError = !balance || balance === null || !balance.success;
 
-  const dataBar = [
-    {
-      name: "Jun",
-      expense: 4000,
-      income: 2400,
-    },
-    {
-      name: "Jul",
-      expense: 3000,
-      income: 1398,
-    },
-    {
-      name: "Aug",
-      expense: 2000,
-      income: 9800,
-    },
-    {
-      name: "Sep",
-      expense: 2780,
-      income: 3908,
-    },
-    {
-      name: "Oct",
-      expense: 1890,
-      income: 4800,
-    },
-    {
-      name: "Nov",
-      expense: 2390,
-      income: 3800,
-    },
-  ];
+  if (isError) {
+    return (
+      <Card rootClassName="mb-5!">
+        <Paragraph italic variant="secondary">
+          {t("error.accountBalance")}
+        </Paragraph>
+      </Card>
+    );
+  }
+
+  const { data } = balance;
 
   return (
     <FlexRow justify="between" rootClassName="mb-5!">
       <FlexCol xs={24} md={24} lg={24} span={12}>
         <Card>
-          <Paragraph size={16}>
-            {t('account.balance')}
-          </Paragraph>
+          <Paragraph size={16}>{t("account.balance")}</Paragraph>
           <AreaChart
             style={{
               width: "100%",
@@ -91,7 +47,7 @@ const AccountBalance: FC<AccountBalanceProps> = () => {
               aspectRatio: 1.618,
             }}
             responsive
-            data={dataArea}
+            data={data.balances}
             margin={{ top: 10, right: 0, left: 0, bottom: 0 }}
           >
             <defs>
@@ -105,7 +61,7 @@ const AccountBalance: FC<AccountBalanceProps> = () => {
               </linearGradient>
             </defs>
             <CartesianGrid />
-            <XAxis dataKey="name" />
+            <XAxis dataKey="month" />
             <YAxis width="auto" />
             <Tooltip />
             <Legend />
@@ -123,9 +79,7 @@ const AccountBalance: FC<AccountBalanceProps> = () => {
 
       <FlexCol xs={24} md={24} lg={24} span={12}>
         <Card>
-          <Paragraph size={16}>
-            {t('account.incomeExpense')}
-          </Paragraph>
+          <Paragraph size={16}>{t("account.incomeExpense")}</Paragraph>
           <BarChart
             style={{
               width: "100%",
@@ -136,10 +90,10 @@ const AccountBalance: FC<AccountBalanceProps> = () => {
               aspectRatio: 1.618,
             }}
             responsive
-            data={dataBar}
+            data={data.icomesExpenses}
           >
             <CartesianGrid />
-            <XAxis dataKey="name" />
+            <XAxis dataKey="month" />
             <YAxis width="auto" />
             <Tooltip />
             <Legend />

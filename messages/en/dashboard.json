@@ -17,7 +17,10 @@
       "title": "Recent transactions"
     },
     "error": {
-      "summary": "An error occurred during the data retrieval process"
+      "summary": "An error occurred during the summary data retrieval process",
+      "totalExpenses": "An error occurred during the total expenses data retrieval process",
+      "accountBalance": "An error occurred during the account blance data retrieval process",
+      "recentTransactions": "An error occurred during the recent transactions data retrieval process"
     }
   }
 }

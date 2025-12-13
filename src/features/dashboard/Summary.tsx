@@ -10,15 +10,15 @@ const { FlexRow, FlexCol } = Flex;
 const { Paragraph } = Typography;
 
 interface SummaryProps {
-  summary: ApiResponse<StatisticSummary>;
+  summary: ApiResponse<StatisticSummary> | null;
 }
 
 const Summary: FC<SummaryProps> = async ({ summary }) => {
   const t = await getTranslations("dashboard");
 
-  const { data, success } = summary;
+  const isError = !summary || summary === null || !summary.success;
 
-  if (!success) {
+  if (isError) {
     return (
       <Card rootClassName="mb-5!">
         <Paragraph italic variant="secondary">
@@ -27,6 +27,8 @@ const Summary: FC<SummaryProps> = async ({ summary }) => {
       </Card>
     );
   }
+
+  const { data } = summary;
 
   return (
     <FlexRow rootClassName="mb-5!" justify="between" aligns="middle">

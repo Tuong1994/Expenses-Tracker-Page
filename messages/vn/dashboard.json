@@ -17,7 +17,10 @@
       "title": "Giao dịch gần đây"
     },
     "error": {
-      "summary": "Đã xảy ra lỗi trong quá trình truy xuất dữ liệu"
+      "summary": "Đã xảy ra lỗi trong quá trình truy xuất dữ liệu tóm tắt",
+      "totalExpenses": "Đã xảy ra lỗi trong quá trình truy xuất dữ liệu tổng chi phí",
+      "accountBalance": "Đã xảy ra lỗi trong quá trình truy xuất dữ liệu số dư tài khoản",
+      "recentTransactions": "Đã xảy ra lỗi trong quá trình truy xuất dữ liệu giao dịch gần đây"
     }
   }
 }

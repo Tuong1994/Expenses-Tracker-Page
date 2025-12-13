@@ -12,6 +12,14 @@
     },
     "actions": {
       "add": "Add transactions"
+    },
+    "cashflow": {
+      "income": "Income",
+      "expense": "Expense"
+    },
+    "paymentMode": {
+      "cash": "Cash",
+      "credit": "Credit"
     }
   }
 }

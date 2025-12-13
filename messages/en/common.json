@@ -110,6 +110,7 @@
         "amount": "Amount",
         "category": "Category",
         "paymentMode": "Payment mode",
+        "cashflow": "Cashflow",
         "description": "Description",
         "createdAt": "Created date",
         "updatedAt": "Updated date"

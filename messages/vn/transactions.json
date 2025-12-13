@@ -12,6 +12,14 @@
     },
     "actions": {
       "add": "Thêm giao dịch"
+    },
+    "cashflow": {
+      "income": "Thu nhập",
+      "expense": "Chi phí"
+    },
+    "paymentMode": {
+      "cash": "Tiền mặt",
+      "credit": "Tín dụng"
     }
   }
 }

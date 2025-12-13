@@ -110,6 +110,7 @@
         "amount": "Số tiền",
         "category": "Danh mục",
         "paymentMode": "Phương thức thanh toán",
+        "cashflow": "Dòng tiền",
         "description": "Mô tả",
         "createdAt": "Ngày tạo",
         "updatedAt": "Ngày cập nhật"

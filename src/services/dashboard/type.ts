@@ -1,3 +1,4 @@
+import { ECategoryType } from "../category/enum";
 import { Category } from "../category/type";
 
 type MonthlyTotal = {
@@ -15,10 +16,10 @@ export type StatisticSummary = {
 };
 
 export type StatisticTotalExpense = {
-  id: string;
+  type: ECategoryType;
+  name: string;
   amount: number;
   percent: number;
-  category: Pick<Category, "name" | "type">;
 };
 
 export type StatisticBalance = {
