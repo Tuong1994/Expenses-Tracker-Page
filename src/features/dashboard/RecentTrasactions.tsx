@@ -41,8 +41,6 @@ const RecentTransactions: FC<RecentTransactionsProps> = ({ transactions }) => {
   const dataSource: Transaction[] =
     transactions.data && Array.isArray(transactions.data) ? transactions.data : [];
 
-  console.log(dataSource)
-
   const columns: Columns<Transaction> = [
     {
       id: "date",

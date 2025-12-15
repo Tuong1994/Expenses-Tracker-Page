@@ -23,14 +23,7 @@ export type ApiQuery = {
   ids?: string;
   userId?: string;
   categoryId?: string;
-  subCategoryId?: string;
-  productId?: string;
-  cartId?: string;
-  orderId?: string;
-  shipmentId?: string;
-  commentId?: string;
-  rateId?: string;
-  likeId?: string;
+  transactionId?: string;
   imageId?: string;
   cityId?: string;
   cityCode?: string;
@@ -39,13 +32,12 @@ export type ApiQuery = {
   wardId?: string;
   wardCode?: string;
 
-  hasSub?: boolean;
-  hasCate?: boolean;
-  hasLike?: boolean;
-  convertLang?: boolean;
-  
   role?: ERole;
   gender?: EGender;
+  startDate?: string;
+  endDate?: string;
+  cashflow?: string;
+  paymentMode?: string;
 };
 
 export interface ApiConfig<T> {

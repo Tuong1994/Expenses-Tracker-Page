@@ -1,12 +1,13 @@
 "use client";
 
-import { FC, useState } from "react";
+import { FC } from "react";
 import { Flex } from "@/components/UI";
 import { DatePicker } from "@/components/Control";
 import { ControlColor } from "@/components/Control/type";
 import { StatisticReqBody } from "@/services/dashboard/type";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "@/i18n/navigation";
+import { defaultEndDate, defaultStartDate } from "@/data/transaction";
 import useLayout from "@/components/UI/Layout/useLayout";
 import utils from "@/utils";
 
@@ -27,14 +28,13 @@ const DateFilter: FC<DateFilterProps> = ({ className }) => {
 
   const endDateParams = searchParams.get("endDate");
 
-  const [dates, setDates] = useState<StatisticReqBody>({
-    startDate: startDateParams ? startDateParams : utils.formatDateValue(new Date("2025-01-01")),
-    endDate: endDateParams ? endDateParams : utils.formatDateValue(new Date("2025-12-01")),
-  });
+  const dates: StatisticReqBody = {
+    startDate: startDateParams ? startDateParams : utils.formatDateValue(defaultStartDate),
+    endDate: endDateParams ? endDateParams : utils.formatDateValue(defaultEndDate),
+  };
 
   const updateDates = (partialDates: Partial<StatisticReqBody>) => {
     const newDates = { ...dates, ...partialDates };
-    setDates(newDates);
     router.push(`?startDate=${newDates.startDate}&endDate=${newDates.endDate}`);
   };
 

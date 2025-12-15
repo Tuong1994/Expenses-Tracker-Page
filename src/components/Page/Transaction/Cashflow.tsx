@@ -14,7 +14,7 @@ const Cashflow: FC<CashflowProps> = ({ cashflow }) => {
 
   const badgeColor = cashflow === ECashflow.INCOME ? "green" : "red";
 
-  const badgeName = cashflow === ECashflow.INCOME ? t("cashflow.icome") : t("cashflow.expense");
+  const badgeName = cashflow === ECashflow.INCOME ? t("cashflow.income") : t("cashflow.expense");
 
   return <Badge color={badgeColor}>{badgeName}</Badge>;
 };

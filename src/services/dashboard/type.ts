@@ -1,5 +1,4 @@
 import { ECategoryType } from "../category/enum";
-import { Category } from "../category/type";
 
 type MonthlyTotal = {
   month: string;

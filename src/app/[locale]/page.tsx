@@ -2,6 +2,9 @@ import { NextPage } from "next";
 import { getTranslations } from "next-intl/server";
 import { getBalances, getRecentTransactions, getSummary, getTotalExpenses } from "@/services/dashboard/api";
 import { redirect } from "@/i18n/navigation";
+import { ELang } from "@/common/enum";
+import { getApiQuery } from "@/services/helper";
+import { defaultEndDate, defaultStartDate } from "@/data/transaction";
 import PageTitle from "@/components/Page/PageTitle";
 import Summary from "@/features/dashboard/Summary";
 import DateFilter from "@/features/dashboard/DateFilter";
@@ -10,8 +13,6 @@ import AccountBalance from "@/features/dashboard/AccountBalance";
 import RecentTransactions from "@/features/dashboard/RecentTrasactions";
 import withLocale from "@/libs/withLocale";
 import utils from "@/utils";
-import { Suspense } from "react";
-import { ELang } from "@/common/enum";
 
 interface DashboardPageProps {
   searchParams: Promise<Record<string, string | undefined>>;
@@ -23,11 +24,10 @@ const DashboardPage: NextPage<DashboardPageProps> = async ({ searchParams, local
 
   const t = await getTranslations();
 
-  const startDate = params.startDate ?? utils.formatDateValue(new Date("2025-01-01"));
-
-  const endDate = params.endDate ?? utils.formatDateValue(new Date("2025-12-01"));
-
-  const reqBody = { startDate, endDate };
+  const reqBody = {
+    startDate: params.startDate ?? utils.formatDateValue(defaultStartDate),
+    endDate: params.endDate ?? utils.formatDateValue(defaultEndDate),
+  };
 
   const apiQuery = { langCode: locale as ELang };
 
@@ -39,7 +39,7 @@ const DashboardPage: NextPage<DashboardPageProps> = async ({ searchParams, local
   ]);
 
   if (!params.startDate || !params.endDate) {
-    return redirect({ href: `?startDate=${startDate}&endDate=${endDate}`, locale });
+    return redirect({ href: getApiQuery(reqBody), locale });
   }
 
   return (
@@ -48,9 +48,7 @@ const DashboardPage: NextPage<DashboardPageProps> = async ({ searchParams, local
         title={t("common.menu.dashboard")}
         rightItem={<DateFilter className="!sm:w-full !md:w-full !lg:w-2xl !xl:w-3xl" />}
       />
-      <Suspense fallback={"Loading...."}>
-        <Summary summary={summaryResult.status === "fulfilled" ? summaryResult.value : null} />
-      </Suspense>
+      <Summary summary={summaryResult.status === "fulfilled" ? summaryResult.value : null} />
       <TotalExpenses
         totalExpenses={totalExpensesResult.status === "fulfilled" ? totalExpensesResult.value : null}
       />

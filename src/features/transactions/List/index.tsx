@@ -4,67 +4,53 @@ import { FC, useState } from "react";
 import { Columns, TableColor } from "@/components/UI/Table/type";
 import { Transaction } from "@/services/transactions/type";
 import { Flex, Typography, Table, Card, Button, Space, Drawer } from "@/components/UI";
+import { ApiQuery, ApiResponse, Paging } from "@/services/type";
 import { HiAdjustmentsHorizontal } from "react-icons/hi2";
 import { useTranslations } from "next-intl";
 import { useViewpoint } from "@/hooks";
+import { useRouter } from "@/i18n/navigation";
+import { useSearchParams } from "next/navigation";
+import { getApiQuery } from "@/services/helper";
 import TransactionsListFilter from "./Filter";
+import CategoryType from "@/components/Page/Transaction/CategoryType";
+import PaymentMode from "@/components/Page/Transaction/PaymentMode";
+import Cashflow from "@/components/Page/Transaction/Cashflow";
+import Amount from "@/components/Page/Transaction/Amount";
 import useLayout from "@/components/UI/Layout/useLayout";
 import moment from "moment";
-import utils from "@/utils";
 
 const { FlexRow, FlexCol } = Flex;
 
 const { Paragraph } = Typography;
 
-interface TransactionsListProps {}
+interface TransactionsListProps {
+  query: ApiQuery;
+  transactions: ApiResponse<Paging<Transaction>>;
+}
 
-const TransactionsList: FC<TransactionsListProps> = () => {
-  const [openFilter, setOpenFilter] = useState<boolean>(false);
-
+const TransactionsList: FC<TransactionsListProps> = ({ query, transactions }) => {
   const t = useTranslations();
+
+  const router = useRouter();
+
+  const searchParams = useSearchParams();
+
+  const pageParam = searchParams.get("page");
 
   const { isPhone, isTablet } = useViewpoint();
 
   const { layoutValue } = useLayout();
 
+  const [openFilter, setOpenFilter] = useState<boolean>(false);
+
   const { layoutColor } = layoutValue;
 
   const isMobile = isPhone || isTablet;
 
-  const dataSource: Transaction[] = [
-    {
-      id: "1",
-      category: "food",
-      paymentMode: "credit",
-      description: "Burger",
-      amount: 40000,
-      createdAt: new Date(),
-    },
-    {
-      id: "2",
-      category: "clothing",
-      paymentMode: "credit",
-      description: "White T-shirt",
-      amount: 120000,
-      createdAt: new Date(),
-    },
-    {
-      id: "3",
-      category: "bills",
-      paymentMode: "credit",
-      description: "Electric, Water, Gas",
-      amount: 1750000,
-      createdAt: new Date(),
-    },
-    {
-      id: "4",
-      category: "others",
-      paymentMode: "credit",
-      description: "Mobile fee",
-      amount: 50000,
-      createdAt: new Date(),
-    },
-  ];
+  const currentPage = pageParam ? Number(pageParam) : 1;
+
+  const dataSource: Transaction[] =
+    transactions.data && Array.isArray(transactions.data.items) ? transactions.data.items : [];
 
   const columns: Columns<Transaction> = [
     {
@@ -77,12 +63,19 @@ const TransactionsList: FC<TransactionsListProps> = () => {
       id: "category",
       dataIndex: "category",
       title: t("common.table.head.category"),
-      render: (category) => <>{category}</>,
+      render: (category) => <CategoryType category={category} />,
     },
     {
       id: "paymentMode",
       dataIndex: "paymentMode",
       title: t("common.table.head.paymentMode"),
+      render: (paymentMode) => <PaymentMode paymentMode={paymentMode} />,
+    },
+    {
+      id: "cashflow",
+      dataIndex: "cashflow",
+      title: t("common.table.head.cashflow"),
+      render: (cashflow) => <Cashflow cashflow={cashflow} />,
     },
     {
       id: "description",
@@ -93,15 +86,23 @@ const TransactionsList: FC<TransactionsListProps> = () => {
       id: "amount",
       dataIndex: "amount",
       title: t("common.table.head.amount"),
-      render: (amount) => <>{utils.formatCurrency(amount)}</>,
+      render: (amount, transaction) => <Amount amount={amount} cashflow={transaction.cashflow} />,
     },
   ];
 
-  const filterHead = <Paragraph size={16}>
-    {t('transactions.filter.title')}
-  </Paragraph>
+  const filterHead = <Paragraph size={16}>{t("transactions.filter.title")}</Paragraph>;
 
   const handleTriggerDrawer = () => setOpenFilter(!openFilter);
+
+  const handleChangePage = (page: number) => {
+    let queries: Record<string, string | number> = {};
+    for (let [key, value] of searchParams.entries()) {
+      if (key === "page") queries = { ...queries, [key]: page };
+      else if (key === "limit") queries = { ...queries, [key]: Number(value) };
+      else queries = { ...queries, [key]: value };
+    }
+    router.push(getApiQuery(queries));
+  };
 
   return (
     <>
@@ -120,16 +121,21 @@ const TransactionsList: FC<TransactionsListProps> = () => {
             columns={columns}
             dataSource={dataSource}
             color={layoutColor as TableColor}
+            paginationProps={{
+              page: currentPage,
+              total: transactions.data.totalItems ?? 10,
+            }}
+            onChangePage={handleChangePage}
           />
         </FlexCol>
         <FlexCol xs={0} span={6}>
           <Card head={filterHead}>
-            <TransactionsListFilter />
+            <TransactionsListFilter query={query} />
           </Card>
         </FlexCol>
       </FlexRow>
       <Drawer head={filterHead} open={openFilter} onClose={handleTriggerDrawer}>
-        <TransactionsListFilter />
+        <TransactionsListFilter query={query} />
       </Drawer>
     </>
   );
