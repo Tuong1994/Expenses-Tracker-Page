@@ -6,6 +6,7 @@ import { ApiQuery } from "@/services/type";
 import { getApiQuery } from "@/services/helper";
 import { redirect } from "@/i18n/navigation";
 import { defaultEndDate, defaultStartDate } from "@/data/transaction";
+import { ECashflow, EPaymentMode } from "@/services/transactions/enum";
 import PageTitle from "@/components/Page/PageTitle";
 import TransactionsForm from "@/features/transactions/AddForm";
 import TransactionsList from "@/features/transactions/List";
@@ -23,9 +24,11 @@ const TransactionsPage: NextPage<TransactionsPageProps> = async ({ searchParams,
   const params = await searchParams;
 
   const query: ApiQuery = {
+    langCode: locale as ELang,
     page: Number(params.page ?? 1),
     limit: Number(params.limit ?? 10),
-    langCode: locale as ELang,
+    cashflow: params.cashflow ?? ECashflow.ALL,
+    paymentMode: params.paymentMode ?? EPaymentMode.ALL,
     startDate: params.startDate ?? utils.formatDateValue(defaultStartDate),
     endDate: params.endDate ?? utils.formatDateValue(defaultEndDate),
   };
@@ -33,7 +36,7 @@ const TransactionsPage: NextPage<TransactionsPageProps> = async ({ searchParams,
   const transactions = await getTransactions(query);
 
   if (!params.page || !params.limit) {
-    delete query.langCode
+    delete query.langCode;
     return redirect({ href: getApiQuery(query), locale });
   }
 

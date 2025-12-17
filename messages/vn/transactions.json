@@ -5,7 +5,8 @@
       "category": "Danh mục",
       "cashflow": "Dòng tiền",
       "payment": "Phương thức thanh toán",
-      "amount": "Số tiền"
+      "amount": "Số tiền",
+      "all": "Tất cả"
     },
     "form": {
       "title": "Giao dịch mới"

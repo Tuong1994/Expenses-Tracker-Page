@@ -5,7 +5,8 @@
       "category": "Category",
       "cashflow": "Cashflow",
       "payment": "Payment mode",
-      "amount": "Amount"
+      "amount": "Amount",
+      "all": "All"
     },
     "form": {
       "title": "New transaction"
