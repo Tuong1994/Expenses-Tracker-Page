@@ -1,4 +1,4 @@
-export const transactionPaths = {
+export const transactionApiPaths = {
   list: "api/transaction/list",
   detail: "api/transaction/detail",
   create: "api/transaction/create",

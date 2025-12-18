@@ -12,3 +12,5 @@ export type Category = {
   updatedAt?: Date | string;
   transaction?: Transaction[];
 };
+
+export type CategoryReqBody = Pick<Category, "nameEn" | "nameVn" | "type">;

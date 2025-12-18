@@ -38,6 +38,8 @@ export type ApiQuery = {
   endDate?: string;
   cashflow?: string;
   paymentMode?: string;
+  min?: number,
+  max?: number
 };
 
 export interface ApiConfig<T> {

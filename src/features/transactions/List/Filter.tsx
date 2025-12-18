@@ -2,16 +2,16 @@
 
 import { FC } from "react";
 import { Flex, Typography, Divider, Button } from "@/components/UI";
-import { Input, Select } from "@/components/Control";
+import { InputNumber, Select } from "@/components/Control";
 import { ControlColor, SelectOptions } from "@/components/Control/type";
 import { ECashflow, EPaymentMode } from "@/services/transactions/enum";
 import { ApiQuery } from "@/services/type";
+import { SelectProps } from "@/components/Control/Select";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { getApiQuery } from "@/services/helper";
 import DateFilter from "@/features/dashboard/DateFilter";
 import useLayout from "@/components/UI/Layout/useLayout";
-import { SelectProps } from "@/components/Control/Select";
 
 const { FlexRow, FlexCol } = Flex;
 
@@ -30,7 +30,9 @@ const TransactionsListFilter: FC<TransactionsListFilterProps> = ({ query }) => {
 
   const { layoutColor } = layoutValue;
 
-  const { cashflow, paymentMode, categoryId } = query;
+  let apiQuery: ApiQuery = { ...query };
+
+  const { cashflow, paymentMode, min, max, categoryId } = apiQuery;
 
   const color = layoutColor as ControlColor;
 
@@ -49,8 +51,18 @@ const TransactionsListFilter: FC<TransactionsListFilterProps> = ({ query }) => {
   ];
 
   const handleSelectCashflow = (type: "cashflow" | "paymentMode", value: EPaymentMode | ECashflow) => {
-    if (type === "cashflow") return router.push(getApiQuery({ ...query, cashflow: value }));
-    router.push(getApiQuery({ ...query, paymentMode: value }));
+    if (type === "cashflow") return router.push(getApiQuery({ ...apiQuery, cashflow: value }));
+    router.push(getApiQuery({ ...apiQuery, paymentMode: value }));
+  };
+
+  const handleChangeAmount = (amount: { min?: number; max?: number }) => {
+    if (amount.min) return (apiQuery = { ...apiQuery, min: amount.min });
+    if (amount.max) return (apiQuery = { ...apiQuery, max: amount.max });
+  };
+
+  const handleFilterByAmount = () => {
+    if (apiQuery.min === query.min && apiQuery.max === query.max) return;
+    router.push(getApiQuery(apiQuery));
   };
 
   return (
@@ -83,15 +95,28 @@ const TransactionsListFilter: FC<TransactionsListFilterProps> = ({ query }) => {
       </Paragraph>
       <FlexRow rootClassName="mb-10!">
         <FlexCol span={12}>
-          <Input label="Min" color={color} />
+          <InputNumber
+            label="Min"
+            color={color}
+            value={min}
+            hasClear={false}
+            addonBefore="$"
+            onChangeInput={(min) => handleChangeAmount({ min })}
+            onBlur={handleFilterByAmount}
+          />
         </FlexCol>
         <FlexCol span={12}>
-          <Input label="Max" color={color} />
+          <InputNumber
+            label="Max"
+            color={color}
+            value={max}
+            hasClear={false}
+            addonBefore="$"
+            onChangeInput={(max) => handleChangeAmount({ max })}
+            onBlur={handleFilterByAmount}
+          />
         </FlexCol>
       </FlexRow>
-      <Button color={color} rootClassName="w-full!">
-        {t("filter.title")}
-      </Button>
     </>
   );
 };

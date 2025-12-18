@@ -1,4 +1,4 @@
-export const statisticPaths = {
+export const statisticApiPaths = {
   summary: "api/statistic/summary",
   totalExpenses: "api/statistic/totalExpenses",
   balances: "api/statistic/balances",

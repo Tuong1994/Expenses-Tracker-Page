@@ -14,7 +14,6 @@ const Amount: FC<AmountProps> = ({ amount, cashflow }) => {
   const isExpense = cashflow === ECashflow.EXPENSE;
   return (
     <Paragraph strong variant={isExpense ? "danger" : "success"}>
-      {isExpense ? "-" : null}
       {utils.formatCurrency(amount)}
     </Paragraph>
   );
