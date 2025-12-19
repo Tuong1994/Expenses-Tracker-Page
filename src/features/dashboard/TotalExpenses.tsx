@@ -9,6 +9,7 @@ import { categoryTypeColor } from "@/data/category";
 import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { useMounted, useViewpoint } from "@/hooks";
+import ErrorMessage from "@/components/Page/ErrorMessage";
 import utils from "@/utils";
 
 const { Paragraph } = Typography;
@@ -41,13 +42,7 @@ const TotalExpenses: FC<TotalExpensesProps> = ({ totalExpenses }) => {
   if (isMobile) return null;
 
   if (isError) {
-    return (
-      <Card rootClassName="mb-5!">
-        <Paragraph italic variant="secondary">
-          {t("dashboard.error.totalExpenses")}
-        </Paragraph>
-      </Card>
-    );
+    return <ErrorMessage>{t("dashboard.error.totalExpenses")}</ErrorMessage>;
   }
 
   const convertDate = (date: string | null) => {

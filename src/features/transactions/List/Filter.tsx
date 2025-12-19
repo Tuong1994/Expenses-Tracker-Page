@@ -1,17 +1,19 @@
 "use client";
 
 import { FC } from "react";
-import { Flex, Typography, Divider, Button } from "@/components/UI";
+import { Flex, Typography, Divider } from "@/components/UI";
 import { InputNumber, Select } from "@/components/Control";
 import { ControlColor, SelectOptions } from "@/components/Control/type";
 import { ECashflow, EPaymentMode } from "@/services/transactions/enum";
-import { ApiQuery } from "@/services/type";
+import { ApiQuery, ApiResponse, List } from "@/services/type";
+import { Category } from "@/services/category/type";
 import { SelectProps } from "@/components/Control/Select";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { getApiQuery } from "@/services/helper";
-import DateFilter from "@/features/dashboard/DateFilter";
+import DateFilter from "@/components/Page/DateFilter";
 import useLayout from "@/components/UI/Layout/useLayout";
+import utils from "@/utils";
 
 const { FlexRow, FlexCol } = Flex;
 
@@ -19,9 +21,12 @@ const { Paragraph } = Typography;
 
 interface TransactionsListFilterProps {
   query: ApiQuery;
+  categories: ApiResponse<List<Category>> | null;
 }
 
-const TransactionsListFilter: FC<TransactionsListFilterProps> = ({ query }) => {
+type SelectType = "category" | "cashflow" | "paymentMode";
+
+const TransactionsListFilter: FC<TransactionsListFilterProps> = ({ query, categories }) => {
   const t = useTranslations("transactions");
 
   const router = useRouter();
@@ -38,6 +43,12 @@ const TransactionsListFilter: FC<TransactionsListFilterProps> = ({ query }) => {
 
   const commonSelectProps: SelectProps = { hasClear: false, hasSearch: false, color };
 
+  const isCategoryError = !categories || categories === null || !categories.success;
+
+  const categoryOptions: SelectOptions = !isCategoryError
+    ? utils.convertDataToSelectOptions<Category>(categories.data.items, "name", "id")
+    : [];
+
   const cashflowOptions: SelectOptions = [
     { label: t("filter.all"), value: ECashflow.ALL },
     { label: t("cashflow.income"), value: ECashflow.INCOME },
@@ -50,7 +61,8 @@ const TransactionsListFilter: FC<TransactionsListFilterProps> = ({ query }) => {
     { label: t("paymentMode.credit"), value: EPaymentMode.CREDIT },
   ];
 
-  const handleSelectCashflow = (type: "cashflow" | "paymentMode", value: EPaymentMode | ECashflow) => {
+  const handleSelect = (type: SelectType, value: string | EPaymentMode | ECashflow) => {
+    if (type === "category") return router.push(getApiQuery({ ...apiQuery, categoryId: value }));
     if (type === "cashflow") return router.push(getApiQuery({ ...apiQuery, cashflow: value }));
     router.push(getApiQuery({ ...apiQuery, paymentMode: value }));
   };
@@ -71,7 +83,13 @@ const TransactionsListFilter: FC<TransactionsListFilterProps> = ({ query }) => {
       <Paragraph rootClassName="mb-5!" variant="secondary">
         {t("filter.category")}
       </Paragraph>
-      <Select {...commonSelectProps} />
+      <Select
+        hasSearch={false}
+        color={color}
+        defaultValue={categoryId}
+        options={categoryOptions}
+        onChangeSelect={(value) => handleSelect("category", value as string)}
+      />
       <Divider />
       <Paragraph variant="secondary">{t("filter.cashflow")}</Paragraph>
       <Select
@@ -79,7 +97,7 @@ const TransactionsListFilter: FC<TransactionsListFilterProps> = ({ query }) => {
         rootClassName="my-5!"
         defaultValue={cashflow}
         options={cashflowOptions}
-        onChangeSelect={(value) => handleSelectCashflow("cashflow", value as ECashflow)}
+        onChangeSelect={(value) => handleSelect("cashflow", value as ECashflow)}
       />
       <Paragraph variant="secondary">{t("filter.payment")}</Paragraph>
       <Select
@@ -87,7 +105,7 @@ const TransactionsListFilter: FC<TransactionsListFilterProps> = ({ query }) => {
         rootClassName="my-5!"
         defaultValue={paymentMode}
         options={paymentModeOptions}
-        onChangeSelect={(value) => handleSelectCashflow("paymentMode", value as EPaymentMode)}
+        onChangeSelect={(value) => handleSelect("paymentMode", value as EPaymentMode)}
       />
       <Divider />
       <Paragraph rootClassName="mb-5!" variant="secondary">

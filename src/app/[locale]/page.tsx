@@ -7,7 +7,7 @@ import { getApiQuery } from "@/services/helper";
 import { defaultEndDate, defaultStartDate } from "@/data/transaction";
 import PageTitle from "@/components/Page/PageTitle";
 import Summary from "@/features/dashboard/Summary";
-import DateFilter from "@/features/dashboard/DateFilter";
+import DateFilter from "@/components/Page/DateFilter";
 import TotalExpenses from "@/features/dashboard/TotalExpenses";
 import AccountBalance from "@/features/dashboard/AccountBalance";
 import RecentTransactions from "@/features/dashboard/RecentTrasactions";

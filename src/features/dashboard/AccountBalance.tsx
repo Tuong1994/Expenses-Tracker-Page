@@ -6,6 +6,7 @@ import { Area, AreaChart, Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, 
 import { useTranslations } from "next-intl";
 import { ApiResponse } from "@/services/type";
 import { StatisticBalance } from "@/services/dashboard/type";
+import ErrorMessage from "@/components/Page/ErrorMessage";
 
 const { Paragraph } = Typography;
 
@@ -21,13 +22,7 @@ const AccountBalance: FC<AccountBalanceProps> = ({ balance }) => {
   const isError = !balance || balance === null || !balance.success;
 
   if (isError) {
-    return (
-      <Card rootClassName="mb-5!">
-        <Paragraph italic variant="secondary">
-          {t("error.accountBalance")}
-        </Paragraph>
-      </Card>
-    );
+    return <ErrorMessage>{t("error.accountBalance")}</ErrorMessage>;
   }
 
   const { data } = balance;

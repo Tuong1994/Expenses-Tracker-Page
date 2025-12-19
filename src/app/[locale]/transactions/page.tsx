@@ -7,6 +7,7 @@ import { getApiQuery } from "@/services/helper";
 import { redirect } from "@/i18n/navigation";
 import { defaultEndDate, defaultStartDate } from "@/data/transaction";
 import { ECashflow, EPaymentMode } from "@/services/transactions/enum";
+import { getCategories } from "@/services/category/api";
 import PageTitle from "@/components/Page/PageTitle";
 import TransactionsForm from "@/features/transactions/AddForm";
 import TransactionsList from "@/features/transactions/List";
@@ -23,7 +24,7 @@ const TransactionsPage: NextPage<TransactionsPageProps> = async ({ searchParams,
 
   const params = await searchParams;
 
-  const query: ApiQuery = {
+  const transactionQuery: ApiQuery = {
     langCode: locale as ELang,
     page: Number(params.page ?? 1),
     limit: Number(params.limit ?? 10),
@@ -33,19 +34,31 @@ const TransactionsPage: NextPage<TransactionsPageProps> = async ({ searchParams,
     paymentMode: params.paymentMode ?? EPaymentMode.ALL,
     startDate: params.startDate ?? utils.formatDateValue(defaultStartDate),
     endDate: params.endDate ?? utils.formatDateValue(defaultEndDate),
+    categoryId: params.categoryId ?? "",
   };
 
-  const transactions = await getTransactions(query);
+  const categoryQuery: ApiQuery = {
+    langCode: locale as ELang,
+  };
+
+  const [transactionsResult, categoriesResult] = await Promise.allSettled([
+    getTransactions(transactionQuery),
+    getCategories(categoryQuery),
+  ]);
 
   if (!params.page || !params.limit) {
-    delete query.langCode;
-    return redirect({ href: getApiQuery(query), locale });
+    delete transactionQuery.langCode;
+    return redirect({ href: getApiQuery(transactionQuery), locale });
   }
 
   return (
     <>
       <PageTitle title={t("common.menu.transactions")} rightItem={<TransactionsForm />} />
-      <TransactionsList query={query} transactions={transactions} />
+      <TransactionsList
+        query={transactionQuery}
+        transactions={transactionsResult.status === "fulfilled" ? transactionsResult.value : null}
+        categories={categoriesResult.status === "fulfilled" ? categoriesResult.value : null}
+      />
     </>
   );
 };

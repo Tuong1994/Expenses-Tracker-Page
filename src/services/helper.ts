@@ -29,6 +29,7 @@ export const getApiQuery = (query: ApiQuery) => {
   const result = Object.entries(query).map(([key, value], idx) => {
     let queryName = key;
     let queryValue = value;
+    if(!value) return;
     if (queryName === "page" && Number(queryValue) < 1) queryValue = 1;
     if (queryName === "limit" && (Number(queryValue) < 10 || Number(queryValue) > 100))
       queryValue = LIST_LIMIT_ITEMS;

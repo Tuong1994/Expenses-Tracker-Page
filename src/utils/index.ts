@@ -1,3 +1,4 @@
+import { Option } from "@/components/Control/type";
 import moment from "moment";
 
 const utils = {
@@ -33,6 +34,11 @@ const utils = {
   formatDateValue: (date: Date | string, format = "YYYY-MM-DD") => {
     const defaultDate = date ?? new Date();
     return moment(defaultDate).format(format);
+  },
+
+  convertDataToSelectOptions: <M extends object>(list: M[], label: keyof M, value: keyof M) => {
+    if (!list || !list.length) return [];
+    return list.map((item) => ({ label: item[label], value: item[value] } as Option));
   },
 };
 

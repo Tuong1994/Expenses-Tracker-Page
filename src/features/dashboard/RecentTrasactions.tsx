@@ -10,6 +10,7 @@ import CategoryType from "@/components/Page/Transaction/CategoryType";
 import PaymentMode from "@/components/Page/Transaction/PaymentMode";
 import Amount from "@/components/Page/Transaction/Amount";
 import Cashflow from "@/components/Page/Transaction/Cashflow";
+import ErrorMessage from "@/components/Page/ErrorMessage";
 import useLayout from "@/components/UI/Layout/useLayout";
 import moment from "moment";
 
@@ -29,13 +30,7 @@ const RecentTransactions: FC<RecentTransactionsProps> = ({ transactions }) => {
   const isError = !transactions || transactions === null || !transactions.success;
 
   if (isError) {
-    return (
-      <Card>
-        <Paragraph italic variant="secondary">
-          {t("dashboard.error.recentTransactions")}
-        </Paragraph>
-      </Card>
-    );
+    return <ErrorMessage>{t("dashboard.error.recentTransactions")}</ErrorMessage>;
   }
 
   const dataSource: Transaction[] =

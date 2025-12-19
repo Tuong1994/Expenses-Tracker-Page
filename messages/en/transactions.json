@@ -21,6 +21,7 @@
     "paymentMode": {
       "cash": "Cash",
       "credit": "Credit"
-    }
+    },
+    "error": "An error occurred during the transaction data retrieval process"
   }
 }

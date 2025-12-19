@@ -21,6 +21,7 @@
     "paymentMode": {
       "cash": "Tiền mặt",
       "credit": "Tín dụng"
-    }
+    },
+    "error": "Đã xảy ra lỗi trong quá trình truy xuất dữ liệu giao dịch"
   }
 }

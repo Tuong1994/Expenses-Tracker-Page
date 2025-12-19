@@ -3,6 +3,7 @@ import { Card, Flex, Typography } from "@/components/UI";
 import { getTranslations } from "next-intl/server";
 import { StatisticSummary } from "@/services/dashboard/type";
 import { ApiResponse } from "@/services/type";
+import ErrorMessage from "@/components/Page/ErrorMessage";
 import utils from "@/utils";
 
 const { FlexRow, FlexCol } = Flex;
@@ -19,13 +20,7 @@ const Summary: FC<SummaryProps> = async ({ summary }) => {
   const isError = !summary || summary === null || !summary.success;
 
   if (isError) {
-    return (
-      <Card rootClassName="mb-5!">
-        <Paragraph italic variant="secondary">
-          {t("error.summary")}
-        </Paragraph>
-      </Card>
-    );
+    return <ErrorMessage>{t("error.summary")}</ErrorMessage>;
   }
 
   const { data } = summary;

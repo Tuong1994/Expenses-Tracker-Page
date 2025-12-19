@@ -4,7 +4,8 @@ import { FC, useState } from "react";
 import { Columns, TableColor } from "@/components/UI/Table/type";
 import { Transaction } from "@/services/transactions/type";
 import { Flex, Typography, Table, Card, Button, Space, Drawer } from "@/components/UI";
-import { ApiQuery, ApiResponse, Paging } from "@/services/type";
+import { ApiQuery, ApiResponse, List, Paging } from "@/services/type";
+import { Category } from "@/services/category/type";
 import { HiAdjustmentsHorizontal } from "react-icons/hi2";
 import { useTranslations } from "next-intl";
 import { useViewpoint } from "@/hooks";
@@ -16,6 +17,7 @@ import CategoryType from "@/components/Page/Transaction/CategoryType";
 import PaymentMode from "@/components/Page/Transaction/PaymentMode";
 import Cashflow from "@/components/Page/Transaction/Cashflow";
 import Amount from "@/components/Page/Transaction/Amount";
+import ErrorMessage from "@/components/Page/ErrorMessage";
 import useLayout from "@/components/UI/Layout/useLayout";
 import moment from "moment";
 
@@ -25,10 +27,11 @@ const { Paragraph } = Typography;
 
 interface TransactionsListProps {
   query: ApiQuery;
-  transactions: ApiResponse<Paging<Transaction>>;
+  transactions: ApiResponse<Paging<Transaction>> | null;
+  categories: ApiResponse<List<Category>> | null;
 }
 
-const TransactionsList: FC<TransactionsListProps> = ({ query, transactions }) => {
+const TransactionsList: FC<TransactionsListProps> = ({ query, transactions, categories }) => {
   const t = useTranslations();
 
   const router = useRouter();
@@ -48,6 +51,10 @@ const TransactionsList: FC<TransactionsListProps> = ({ query, transactions }) =>
   const isMobile = isPhone || isTablet;
 
   const currentPage = pageParam ? Number(pageParam) : 1;
+
+  const isError = !transactions || transactions === null || !transactions.success;
+
+  if (isError) return <ErrorMessage>{t("transactions.error")}</ErrorMessage>;
 
   const dataSource: Transaction[] =
     transactions.data && Array.isArray(transactions.data.items) ? transactions.data.items : [];
@@ -130,12 +137,12 @@ const TransactionsList: FC<TransactionsListProps> = ({ query, transactions }) =>
         </FlexCol>
         <FlexCol xs={0} span={6}>
           <Card head={filterHead}>
-            <TransactionsListFilter query={query} />
+            <TransactionsListFilter query={query} categories={categories} />
           </Card>
         </FlexCol>
       </FlexRow>
       <Drawer head={filterHead} open={openFilter} onClose={handleTriggerDrawer}>
-        <TransactionsListFilter query={query} />
+        <TransactionsListFilter query={query} categories={categories} />
       </Drawer>
     </>
   );
