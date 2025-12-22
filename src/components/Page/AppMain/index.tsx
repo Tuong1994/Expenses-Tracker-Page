@@ -8,9 +8,12 @@ const { Container, Side, Body, Content } = Layout;
 
 interface AppMainProps {
   children?: ReactNode;
+  isAuth: boolean;
 }
 
-const AppMain: ForwardRefRenderFunction<HTMLDivElement, AppMainProps> = ({ children }) => {
+const AppMain: ForwardRefRenderFunction<HTMLDivElement, AppMainProps> = ({ children, isAuth }) => {
+  if (!isAuth) return children;
+
   return (
     <Container>
       <Header />

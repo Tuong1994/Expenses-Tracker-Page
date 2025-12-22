@@ -3,7 +3,16 @@ import { ApiConfig, ApiResponse, ResponseError } from "./type";
 
 // const BASE_URL = process.env.NODE_ENV === "development" ? "http://localhost:5000/" : "";
 
-const BASE_URL = "http://localhost:5000/";
+export const BASE_URL = "http://localhost:5000/";
+
+export const HttpStatus = {
+  BAD_REQUEST: 400,
+  UNAUTHORIZED: 401,
+  FORBIDDEN: 403,
+  NOT_FOUND: 404,
+  GATEWAY_TIME_OUT: 504,
+  INTERNAL_SERVER: 500,
+};
 
 const Method = {
   GET: "GET",
@@ -50,6 +59,7 @@ const call = async <TBody, TData = any>(config: ApiConfig<TBody>): Promise<ApiRe
   const reqConfig: RequestInit = {
     method,
     headers,
+    credentials: "include",
     // ❗ Default: no-cache for mutations, cache for GET
     cache: method === Method.GET ? "force-cache" : "no-store",
     next: method === Method.GET ? { revalidate: 0 } : undefined, // ISR optional

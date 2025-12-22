@@ -4,8 +4,11 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
+import { ToastMessage } from "@/components/UI";
+import { cookies } from "next/headers";
 import AppMain from "@/components/Page/AppMain";
 import FlexProvider from "@/components/UI/Flex/Provider";
+import cookieKey from "@/common/constant/cookies";
 import "@/style/globals.css";
 import "@/style/main.scss";
 
@@ -43,6 +46,8 @@ export default async function RootLayout({
 }>) {
   const { locale } = await params;
 
+  const token = (await cookies()).get(cookieKey.TOKEN)?.value;
+
   // Enable static rendering
   setRequestLocale(locale);
 
@@ -51,9 +56,10 @@ export default async function RootLayout({
       <body className={poppins.className}>
         <NextIntlClientProvider>
           <FlexProvider>
-            <AppMain>
+            <AppMain isAuth={Boolean(token)}>
               {children}
               <div id="portal"></div>
+              <ToastMessage />
             </AppMain>
           </FlexProvider>
         </NextIntlClientProvider>

@@ -1,9 +1,10 @@
 "use client";
 
 import { FC, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Button, Modal, Flex, Typography, Divider } from "@/components/UI";
 import { DatePicker, Form, FormItem, Input, InputNumber, Radio, Select } from "@/components/Control";
-import { useTranslations } from "next-intl";
+import { ECashflow, EPaymentMode } from "@/services/transactions/enum";
 import { ControlColor } from "@/components/Control/type";
 import { Transaction } from "@/services/transactions/type";
 import useLayout from "@/components/UI/Layout/useLayout";
@@ -28,10 +29,11 @@ const TransactionsForm: FC<TransactionsFormProps> = () => {
 
   const initialData: Transaction = {
     amount: 0,
-    category: "",
-    cashflow: "",
-    paymentMode: "",
+    categoryId: "",
+    cashflow: ECashflow.ALL,
+    paymentMode: EPaymentMode.ALL,
     description: "",
+    userId: "",
     createdAt: new Date(),
   };
 
