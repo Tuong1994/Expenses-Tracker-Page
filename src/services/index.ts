@@ -34,31 +34,37 @@ export const ApiResponseError = (status: number, error: any) => {
 
 const call = async <TBody, TData = any>(config: ApiConfig<TBody>): Promise<ApiResponse<TData>> => {
   const { apiPath, method, body, auth, token, abortKey, options = {} } = config;
+
   let apiResponse: ApiResponse<TData> = defaultResponse();
   let controller: AbortController | null = null;
   let finalBody = body as any;
   let res: Response;
   const url = `${BASE_URL}${apiPath}`;
-  const headers: Record<string, string> = { ...(options.headers as any) };
+  const defaultHeaders: Record<string, string> = {
+    ...(options.headers as any),
+  };
+
   // Auto JSON encode
   if (body && !(body instanceof FormData)) {
-    headers["Content-Type"] = "application/json";
+    defaultHeaders["Content-Type"] = "application/json";
     if (typeof body === "object") finalBody = JSON.stringify(body);
   }
+
   // Server token
-  if (token) headers["Authorization"] = `Bearer ${token}`;
+  if (token) defaultHeaders["Authorization"] = `Bearer ${token}`;
   // Client token
   if (!token && auth && typeof window !== "undefined") {
     // localStorage may throw (Safari private mode, disabled storage, sandboxed iframe)
     // → If reading token fails, ignore the error and continue without auth header.
     try {
       const t = localStorage.getItem("access_token");
-      if (t) headers["Authorization"] = `Bearer ${t}`;
+      if (t) defaultHeaders["Authorization"] = `Bearer ${t}`;
     } catch {}
   }
+
   const reqConfig: RequestInit = {
     method,
-    headers,
+    headers: defaultHeaders,
     credentials: "include",
     // ❗ Default: no-cache for mutations, cache for GET
     cache: method === Method.GET ? "force-cache" : "no-store",
@@ -66,6 +72,7 @@ const call = async <TBody, TData = any>(config: ApiConfig<TBody>): Promise<ApiRe
     ...options,
     body: method !== Method.GET ? finalBody : undefined,
   };
+  
   if (abortKey) {
     controller = requestManager.create(abortKey);
     reqConfig.signal = controller.signal;

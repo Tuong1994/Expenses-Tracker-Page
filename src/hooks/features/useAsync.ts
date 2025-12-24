@@ -7,19 +7,25 @@ const useAsync = <T>(
   func: (...params: any) => Promise<ApiResponse<T>>,
   dependencies: DependencyList = []
 ) => {
-  const [loading, setLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
 
   const call = useCallback(
     async (...params: any) => {
-      setLoading(true);
+      setIsLoading(true);
+      setIsSuccess(false);
+      setIsError(false);
       const response = (await func(...params)) as ApiResponse<T>;
-      setLoading(false);
+      if (response.success) setIsSuccess(true);
+      else setIsError(true);
+      setIsLoading(false);
       return response;
     },
-    [dependencies]
+    [...dependencies]
   );
 
-  return { loading, call };
+  return { isLoading, isSuccess, isError, call };
 };
 
-export default useAsync
+export default useAsync;

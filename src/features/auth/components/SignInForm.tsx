@@ -17,7 +17,7 @@ interface SignInForm {}
 const SignInForm: FC<SignInForm> = () => {
   const t = useTranslations();
 
-  const { loading, onSignIn } = useSignIn();
+  const { isLoading, onSignIn } = useSignIn();
 
   const { email, password } = useFormRule();
 
@@ -30,16 +30,14 @@ const SignInForm: FC<SignInForm> = () => {
     password: "",
   };
 
-  const handleFinish = async (formData: AuthSignIn) => {
-    await onSignIn(formData);
-  };
+  const handleFinish = async (formData: AuthSignIn) => await onSignIn(formData);
 
   return (
     <Form<AuthSignIn>
       sizes="lg"
       color={layoutColor as ControlColor}
       initialData={initialData}
-      disabled={loading}
+      disabled={isLoading}
       onFinish={handleFinish}
     >
       <FormItem name="email" rules={email()}>
@@ -50,11 +48,13 @@ const SignInForm: FC<SignInForm> = () => {
       </FormItem>
       <Space justify="end">
         <Link href={routePaths.FORGOT_PASSWORD}>
-          <Button text>{t("auth.signIn.forgot")}?</Button>
+          <Button type="button" text>
+            {t("auth.signIn.forgot")}?
+          </Button>
         </Link>
       </Space>
       <Divider />
-      <Button loading={loading} sizes="lg" rootClassName="w-full! my-5!">
+      <Button loading={isLoading} sizes="lg" rootClassName="w-full! my-5!">
         {t("auth.signIn.title")}
       </Button>
       <Link href={routePaths.SIGN_UP}>

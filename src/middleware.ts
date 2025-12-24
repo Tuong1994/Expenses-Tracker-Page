@@ -20,8 +20,6 @@ export default function middleware(request: NextRequest) {
   // Lấy locale từ header mà next-intl inject (đảm bảo là locale mới nhất)
   const locale = intlResponse.headers.get("x-next-intl-locale") || routing.defaultLocale;
 
-  console.log("LOCALE (after intlMiddleware)", locale); // ← Giờ sẽ đúng khi switch
-
   const pathname = request.nextUrl.pathname;
   const pathWithoutLocale = pathname.replace(`/${locale}`, "") || "/";
 

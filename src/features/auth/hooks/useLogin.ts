@@ -2,8 +2,9 @@
 
 import { signIn } from "@/services/auth/api";
 import { AuthSignIn } from "@/services/auth/type";
-import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/navigation";
+import { routePaths } from "@/common/constant/routers";
 import { HttpStatus } from "@/services";
 import useMessage from "@/components/UI/ToastMessage/useMessage";
 import useAsync from "@/hooks/features/useAsync";
@@ -11,11 +12,11 @@ import useAsync from "@/hooks/features/useAsync";
 const useSignIn = () => {
   const t = useTranslations("common.message");
 
-  const router = useRouter();
-
   const messageApi = useMessage();
 
-  const { loading, call } = useAsync(signIn);
+  const router = useRouter()
+
+  const { isLoading, call } = useAsync(signIn);
 
   const onSignIn = async (formData: AuthSignIn) => {
     const response = await call(formData);
@@ -28,12 +29,13 @@ const useSignIn = () => {
       if (status === HttpStatus.UNAUTHORIZED) message = t("error.unauthorized");
       return messageApi.error(message);
     }
-
+    
     messageApi.success(t("success.signIn"));
-    // router.replace("/dashboard");
+    router.replace(routePaths.DASHBOARD)
+    router.refresh()
   };
 
-  return { loading, onSignIn };
+  return { isLoading, onSignIn };
 };
 
 export default useSignIn;

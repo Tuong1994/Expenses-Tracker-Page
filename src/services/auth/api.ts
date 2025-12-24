@@ -34,7 +34,7 @@ export const getOAuthInfo = async () => {
 };
 
 export const refresh = async () => {
-  const response = await Fetch.Post<any, any>(authApiPaths.refresh, null);
+  const response = await Fetch.Post<any, any>(authApiPaths.refresh, null, "refresh");
   return response;
 };
 
