@@ -1,6 +1,7 @@
 import { NextPage } from "next";
 import { getTranslations } from "next-intl/server";
 import { getTransactions } from "@/services/transactions/api";
+import { getUser } from "@/services/user/api";
 import { ELang } from "@/common/enum";
 import { ApiQuery } from "@/services/type";
 import { getApiQuery } from "@/services/helper";
@@ -9,8 +10,8 @@ import { defaultEndDate, defaultStartDate } from "@/data/transaction";
 import { ECashflow, EPaymentMode } from "@/services/transactions/enum";
 import { getCategories } from "@/services/category/api";
 import PageTitle from "@/components/Page/PageTitle";
-import TransactionsForm from "@/features/transactions/AddForm";
-import TransactionsList from "@/features/transactions/List";
+import TransactionsForm from "@/features/transactions/components/AddForm";
+import TransactionsList from "@/features/transactions/components/List";
 import withLocale from "@/libs/withLocale";
 import utils from "@/utils";
 
@@ -41,9 +42,14 @@ const TransactionsPage: NextPage<TransactionsPageProps> = async ({ searchParams,
     langCode: locale as ELang,
   };
 
-  const [transactionsResult, categoriesResult] = await Promise.allSettled([
+  const userQuery: ApiQuery = {
+    langCode: locale as ELang,
+  };
+
+  const [transactionsResult, categoriesResult, userResult] = await Promise.allSettled([
     getTransactions(transactionQuery),
     getCategories(categoryQuery),
+    getUser(userQuery),
   ]);
 
   if (!params.page || !params.limit) {
@@ -53,7 +59,10 @@ const TransactionsPage: NextPage<TransactionsPageProps> = async ({ searchParams,
 
   return (
     <>
-      <PageTitle title={t("common.menu.transactions")} rightItem={<TransactionsForm />} />
+      <PageTitle
+        title={t("common.menu.transactions")}
+        rightItem={<TransactionsForm user={userResult.status === "fulfilled" ? userResult.value : null} />}
+      />
       <TransactionsList
         query={transactionQuery}
         transactions={transactionsResult.status === "fulfilled" ? transactionsResult.value : null}

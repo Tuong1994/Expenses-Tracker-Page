@@ -16,7 +16,7 @@ const useLogout = () => {
 
   const router = useRouter();
 
-  const { isLoading, call } = useAsync(logout);
+  const { isLoading, isSuccess, isError, call } = useAsync(logout);
 
   const onLogout = async (query: ApiQuery) => {
     const response = await call(query);
@@ -33,7 +33,7 @@ const useLogout = () => {
     router.refresh();
   };
 
-  return { isLoading, onLogout };
+  return { isLoading, isSuccess, isError, onLogout };
 };
 
-export default useLogout
+export default useLogout;

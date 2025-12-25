@@ -23,7 +23,12 @@ const SideProfile: FC<SideProfileProps> = ({ user }) => {
 
   const handleLogout = async () => await onLogout({ userId: "US_1" });
 
-  if (isError) return null;
+  if (isError)
+    return (
+      <Button loading={isLoading} onClick={handleLogout}>
+        Logout
+      </Button>
+    );
 
   const { data: info } = user;
 

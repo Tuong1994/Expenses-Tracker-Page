@@ -14,9 +14,9 @@ const useSignIn = () => {
 
   const messageApi = useMessage();
 
-  const router = useRouter()
+  const router = useRouter();
 
-  const { isLoading, call } = useAsync(signIn);
+  const { isLoading, isSuccess, isError, call } = useAsync(signIn);
 
   const onSignIn = async (formData: AuthSignIn) => {
     const response = await call(formData);
@@ -29,13 +29,13 @@ const useSignIn = () => {
       if (status === HttpStatus.UNAUTHORIZED) message = t("error.unauthorized");
       return messageApi.error(message);
     }
-    
+
     messageApi.success(t("success.signIn"));
-    router.replace(routePaths.DASHBOARD)
-    router.refresh()
+    router.replace(routePaths.DASHBOARD);
+    router.refresh();
   };
 
-  return { isLoading, onSignIn };
+  return { isLoading, isSuccess, isError, onSignIn };
 };
 
 export default useSignIn;

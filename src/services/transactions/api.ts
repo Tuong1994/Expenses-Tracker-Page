@@ -22,19 +22,19 @@ export const getTrasaction = async (query: ApiQuery) => {
   return response;
 };
 
-export const createTransaction = async (transaction: Transaction) => {
+export const createTransaction = async (data: Transaction) => {
   const response = await Fetch.Post<Transaction, Transaction>(
     transactionApiPaths.create,
-    transaction,
+    data,
     "createTransaction"
   );
   return response;
 };
 
-export const updateTransaction = async (query: ApiQuery, transaction: Transaction) => {
+export const updateTransaction = async (query: ApiQuery, data: Transaction) => {
   const response = await Fetch.Put<Transaction, any>(
     transactionApiPaths.update + getApiQuery(query),
-    transaction,
+    data,
     "updateTransaction"
   );
   return response;

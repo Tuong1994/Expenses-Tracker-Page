@@ -7,21 +7,28 @@ import { DatePicker, Form, FormItem, Input, InputNumber, Radio, Select } from "@
 import { ECashflow, EPaymentMode } from "@/services/transactions/enum";
 import { ControlColor } from "@/components/Control/type";
 import { Transaction } from "@/services/transactions/type";
+import { ApiResponse } from "@/services/type";
+import { User } from "@/services/user/type";
 import useLayout from "@/components/UI/Layout/useLayout";
 import useForm from "@/components/Control/Form/useForm";
+import useCreateTransaction from "../../hooks/useCreateTransaction";
 
 const { FlexRow, FlexCol } = Flex;
 
 const { Paragraph } = Typography;
 
-interface TransactionsFormProps {}
+interface TransactionsFormProps {
+  user: ApiResponse<User> | null;
+}
 
-const TransactionsForm: FC<TransactionsFormProps> = () => {
+const TransactionsForm: FC<TransactionsFormProps> = ({ user }) => {
   const [openModal, setOpenModal] = useState<boolean>(false);
 
   const t = useTranslations();
 
   const form = useForm();
+
+  const { isLoading, onCreateTransaction } = useCreateTransaction();
 
   const { layoutValue } = useLayout();
 
@@ -33,14 +40,13 @@ const TransactionsForm: FC<TransactionsFormProps> = () => {
     cashflow: ECashflow.ALL,
     paymentMode: EPaymentMode.ALL,
     description: "",
-    userId: "",
-    createdAt: new Date(),
+    userId: user?.data ? String(user.data?.id) : "",
   };
 
   const handleTriggerModal = () => setOpenModal(!openModal);
 
-  const handleSubmit = (formData: Transaction) => {
-    console.log(formData)
+  const handleSubmit = async (formData: Transaction) => {
+    console.log(formData);
   };
 
   return (
@@ -55,7 +61,11 @@ const TransactionsForm: FC<TransactionsFormProps> = () => {
         onOk={form?.handleSubmit}
         onCancel={handleTriggerModal}
       >
-        <Form<Transaction> initialData={initialData} color={layoutColor as ControlColor} onFinish={handleSubmit}>
+        <Form<Transaction>
+          initialData={initialData}
+          color={layoutColor as ControlColor}
+          onFinish={handleSubmit}
+        >
           <FormItem name="createdAt">
             <DatePicker label={t("common.form.label.date")} />
           </FormItem>

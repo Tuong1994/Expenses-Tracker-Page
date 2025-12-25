@@ -123,6 +123,9 @@
     },
     "message": {
       "success": {
+        "create": "Tạo thành công",
+        "update": "Cập nhật thành công",
+        "remove": "Xóa thành công",
         "signIn": "Đăng nhập thành công",
         "signUp": "Đăng ký thành công",
         "logout": "Đã đăng xuất",
@@ -133,8 +136,10 @@
         "authEmail": "Email không đúng. Vui lòng thử lại",
         "authPassword": "Mật khẩu không đúng. Vui lòng thử lại",
         "emailExist": "Email này đã tồn tại",
+        "create": "Lỗi! Không thể tạo",
+        "update": "Lỗi! Không thể cập nhật",
+        "remove": "Lỗi! Không thể xóa",
         "logout": "Lỗi đăng xuất",
-        "remove": "Lỗi không thể xóa",
         "api": "Đã xảy ra lỗi"
       }
     }

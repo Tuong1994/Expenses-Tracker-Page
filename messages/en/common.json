@@ -123,6 +123,9 @@
     },
     "message": {
       "success": {
+        "create": "Created successfully",
+        "update": "Updated successfully",
+        "remove": "Removed successfully",
         "signIn": "Sign in success",
         "signUp": "Sign up success",
         "logout": "Logouted",
@@ -133,8 +136,10 @@
         "authEmail": "Email is not correct. Please try again",
         "authPassword": "Password is not correct. Please try again",
         "emailExist": "Email is already exist",
+        "create": "Error! Cannot create",
+        "update": "Error! Cannot update",
+        "remove": "Error! Cannot remove",
         "logout": "Logout failed",
-        "remove": "Remove failed",
         "api": "Api network failed"
       }
     }
