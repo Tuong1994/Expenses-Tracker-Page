@@ -5,7 +5,7 @@ import { AuthSignIn } from "@/services/auth/type";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { routePaths } from "@/common/constant/routers";
-import { HttpStatus } from "@/services";
+import { HttpStatus } from "@/services/helper";
 import useMessage from "@/components/UI/ToastMessage/useMessage";
 import useAsync from "@/hooks/features/useAsync";
 

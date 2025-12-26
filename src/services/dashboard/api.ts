@@ -1,6 +1,6 @@
 "use server";
 
-import Fetch from "..";
+import FetchServer from "../fetch.server";
 import { getApiQuery } from "../helper";
 import { Transaction } from "../transactions/type";
 import { ApiQuery } from "../type";
@@ -8,7 +8,7 @@ import { statisticApiPaths } from "./path";
 import { StatisticBalance, StatisticReqBody, StatisticSummary, StatisticTotalExpense } from "./type";
 
 export const getSummary = async (statistic: StatisticReqBody) => {
-  const response = await Fetch.Post<StatisticReqBody, StatisticSummary>(
+  const response = await FetchServer.Post<StatisticReqBody, StatisticSummary>(
     statisticApiPaths.summary,
     statistic,
     "getSummary"
@@ -17,7 +17,7 @@ export const getSummary = async (statistic: StatisticReqBody) => {
 };
 
 export const getTotalExpenses = async (query: ApiQuery, statistic: StatisticReqBody) => {
-  const response = await Fetch.Post<StatisticReqBody, StatisticTotalExpense[]>(
+  const response = await FetchServer.Post<StatisticReqBody, StatisticTotalExpense[]>(
     statisticApiPaths.totalExpenses + getApiQuery(query),
     statistic,
     "getTotalExpenses"
@@ -26,7 +26,7 @@ export const getTotalExpenses = async (query: ApiQuery, statistic: StatisticReqB
 };
 
 export const getBalances = async (statistic: StatisticReqBody) => {
-  const response = await Fetch.Post<StatisticReqBody, StatisticBalance>(
+  const response = await FetchServer.Post<StatisticReqBody, StatisticBalance>(
     statisticApiPaths.balances,
     statistic,
     "getBalances"
@@ -35,7 +35,7 @@ export const getBalances = async (statistic: StatisticReqBody) => {
 };
 
 export const getRecentTransactions = async (query: ApiQuery) => {
-  const response = await Fetch.Get<Transaction[]>(
+  const response = await FetchServer.Get<Transaction[]>(
     statisticApiPaths.recentTransactions + getApiQuery(query),
     "getRecentTransactions"
   );

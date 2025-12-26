@@ -10,6 +10,7 @@ import { Category } from "@/services/category/type";
 import { SelectProps } from "@/components/Control/Select";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
+import { useSelectOptions } from "@/hooks";
 import { getApiQuery } from "@/services/helper";
 import DateFilter from "@/components/Page/DateFilter";
 import useLayout from "@/components/UI/Layout/useLayout";
@@ -31,6 +32,8 @@ const TransactionsListFilter: FC<TransactionsListFilterProps> = ({ query, catego
 
   const router = useRouter();
 
+  const { cashflowOptions, paymentModeOptions } = useSelectOptions();
+
   const { layoutValue } = useLayout();
 
   const { layoutColor } = layoutValue;
@@ -48,18 +51,6 @@ const TransactionsListFilter: FC<TransactionsListFilterProps> = ({ query, catego
   const categoryOptions: SelectOptions = !isCategoryError
     ? utils.convertDataToSelectOptions<Category>(categories.data.items, "name", "id")
     : [];
-
-  const cashflowOptions: SelectOptions = [
-    { label: t("filter.all"), value: ECashflow.ALL },
-    { label: t("cashflow.income"), value: ECashflow.INCOME },
-    { label: t("cashflow.expense"), value: ECashflow.EXPENSE },
-  ];
-
-  const paymentModeOptions: SelectOptions = [
-    { label: t("filter.all"), value: EPaymentMode.ALL },
-    { label: t("paymentMode.cash"), value: EPaymentMode.CASH },
-    { label: t("paymentMode.credit"), value: EPaymentMode.CREDIT },
-  ];
 
   const handleSelect = (type: SelectType, value: string | EPaymentMode | ECashflow) => {
     if (type === "category") return router.push(getApiQuery({ ...apiQuery, categoryId: value }));

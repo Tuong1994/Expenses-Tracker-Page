@@ -57,11 +57,18 @@ const TransactionsPage: NextPage<TransactionsPageProps> = async ({ searchParams,
     return redirect({ href: getApiQuery(transactionQuery), locale });
   }
 
+  console.log("Transaction", transactionsResult);
+
   return (
     <>
       <PageTitle
         title={t("common.menu.transactions")}
-        rightItem={<TransactionsForm user={userResult.status === "fulfilled" ? userResult.value : null} />}
+        rightItem={
+          <TransactionsForm
+            user={userResult.status === "fulfilled" ? userResult.value : null}
+            categories={categoriesResult.status === "fulfilled" ? categoriesResult.value : null}
+          />
+        }
       />
       <TransactionsList
         query={transactionQuery}

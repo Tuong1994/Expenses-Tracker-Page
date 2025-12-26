@@ -1,11 +1,13 @@
+"use server";
+
 import { ApiQuery } from "../type";
 import { getApiQuery } from "../helper";
 import { ImageUpload } from "./type";
-import Fetch from "..";
 import imageApiPaths from "./path";
+import FetchClient from "../fetch.client";
 
 export const customerUpload = async (query: ApiQuery, data: FormData) => {
-  const response = await Fetch.Post<FormData, ImageUpload>(
+  const response = await FetchClient.Post<FormData, ImageUpload>(
     imageApiPaths.customerUpload + getApiQuery(query),
     data
   );
@@ -13,7 +15,7 @@ export const customerUpload = async (query: ApiQuery, data: FormData) => {
 };
 
 export const productUpload = async (query: ApiQuery, data: FormData) => {
-  const response = await Fetch.Post<FormData, ImageUpload>(
+  const response = await FetchClient.Post<FormData, ImageUpload>(
     imageApiPaths.productUpload + getApiQuery(query),
     data
   );
@@ -21,6 +23,6 @@ export const productUpload = async (query: ApiQuery, data: FormData) => {
 };
 
 export const removeImages = async (query: ApiQuery) => {
-  const response = await Fetch.Delete<any, any>(imageApiPaths.remove + getApiQuery(query));
+  const response = await FetchClient.Delete<any, any>(imageApiPaths.remove + getApiQuery(query));
   return response;
 };

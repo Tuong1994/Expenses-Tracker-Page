@@ -1,21 +1,23 @@
 "use server";
 
-import Fetch from "..";
 import { getApiQuery } from "../helper";
 import { ApiQuery, Paging } from "../type";
 import { transactionApiPaths } from "./path";
 import { Transaction } from "./type";
+import { revalidateTag } from "next/cache";
+import FetchServer from "../fetch.server";
 
 export const getTransactions = async (query: ApiQuery) => {
-  const response = await Fetch.Get<Paging<Transaction>>(
+  const response = await FetchServer.Get<Paging<Transaction>>(
     transactionApiPaths.list + getApiQuery(query),
-    "getTransactions"
+    "getTransactions",
+    { next: { tags: ["transactions"] } }
   );
   return response;
 };
 
 export const getTrasaction = async (query: ApiQuery) => {
-  const response = await Fetch.Get<Transaction>(
+  const response = await FetchServer.Get<Transaction>(
     transactionApiPaths.detail + getApiQuery(query),
     "getTransaction"
   );
@@ -23,16 +25,17 @@ export const getTrasaction = async (query: ApiQuery) => {
 };
 
 export const createTransaction = async (data: Transaction) => {
-  const response = await Fetch.Post<Transaction, Transaction>(
+  const response = await FetchServer.Post<Transaction, Transaction>(
     transactionApiPaths.create,
     data,
     "createTransaction"
   );
+  if (response.success) revalidateTag("transactions");
   return response;
 };
 
 export const updateTransaction = async (query: ApiQuery, data: Transaction) => {
-  const response = await Fetch.Put<Transaction, any>(
+  const response = await FetchServer.Put<Transaction, any>(
     transactionApiPaths.update + getApiQuery(query),
     data,
     "updateTransaction"
@@ -41,7 +44,7 @@ export const updateTransaction = async (query: ApiQuery, data: Transaction) => {
 };
 
 export const removeTransactions = async (query: ApiQuery) => {
-  const response = await Fetch.Delete<any, any>(
+  const response = await FetchServer.Delete<any, any>(
     transactionApiPaths.remove + getApiQuery(query),
     "removeTransactions"
   );

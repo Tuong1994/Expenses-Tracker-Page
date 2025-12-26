@@ -21,6 +21,8 @@ const SideProfile: FC<SideProfileProps> = ({ user }) => {
 
   const isError = !user || user === null || !user.success;
 
+  console.log("User", user)
+
   const handleLogout = async () => await onLogout({ userId: "US_1" });
 
   if (isError)

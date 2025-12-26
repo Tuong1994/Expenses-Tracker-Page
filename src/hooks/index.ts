@@ -7,5 +7,17 @@ import useLang from "./features/useLang";
 import useFormRule from "./features/useFormRule";
 import useMounted from "./features/useMounted";
 import useDebounce from "./features/useDebounce";
+import useSelectOptions from "./data/useSelectOptions";
 
-export { useClickOutside, useDetectBottom, useViewpoint, useOverflow, useRender, useLang, useFormRule, useMounted, useDebounce };
+export {
+  useClickOutside,
+  useDetectBottom,
+  useViewpoint,
+  useOverflow,
+  useRender,
+  useLang,
+  useFormRule,
+  useMounted,
+  useDebounce,
+  useSelectOptions,
+};

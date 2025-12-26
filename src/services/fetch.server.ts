@@ -1,39 +1,10 @@
+import { cookies } from "next/headers";
+import { ApiResponseError, BASE_URL, defaultResponse, Method } from "./helper";
 import { requestManager } from "./manager";
-import { ApiConfig, ApiResponse, ResponseError } from "./type";
-
-// const BASE_URL = process.env.NODE_ENV === "development" ? "http://localhost:5000/" : "";
-
-export const BASE_URL = "http://localhost:5000/";
-
-export const HttpStatus = {
-  BAD_REQUEST: 400,
-  UNAUTHORIZED: 401,
-  FORBIDDEN: 403,
-  NOT_FOUND: 404,
-  GATEWAY_TIME_OUT: 504,
-  INTERNAL_SERVER: 500,
-};
-
-const Method = {
-  GET: "GET",
-  POST: "POST",
-  PUT: "PUT",
-  DELETE: "DELETE",
-};
-
-export const defaultResponse = <T>(): ApiResponse<T> => ({ data: {} as T, success: false });
-
-export const ApiResponseError = (status: number, error: any) => {
-  let responseError: ResponseError = { status: 0, message: "" };
-  responseError = {
-    status: status ? status : 0,
-    message: error?.message ? error?.message : "Invalid",
-  };
-  return responseError;
-};
+import { ApiConfig, ApiResponse } from "./type";
 
 const call = async <TBody, TData = any>(config: ApiConfig<TBody>): Promise<ApiResponse<TData>> => {
-  const { apiPath, method, body, auth, token, abortKey, options = {} } = config;
+  const { apiPath, method, body, abortKey, options = {} } = config;
 
   let apiResponse: ApiResponse<TData> = defaultResponse();
   let controller: AbortController | null = null;
@@ -42,24 +13,13 @@ const call = async <TBody, TData = any>(config: ApiConfig<TBody>): Promise<ApiRe
   const url = `${BASE_URL}${apiPath}`;
   const defaultHeaders: Record<string, string> = {
     ...(options.headers as any),
+    Cookie: (await cookies()).toString(),
   };
 
   // Auto JSON encode
   if (body && !(body instanceof FormData)) {
     defaultHeaders["Content-Type"] = "application/json";
     if (typeof body === "object") finalBody = JSON.stringify(body);
-  }
-
-  // Server token
-  if (token) defaultHeaders["Authorization"] = `Bearer ${token}`;
-  // Client token
-  if (!token && auth && typeof window !== "undefined") {
-    // localStorage may throw (Safari private mode, disabled storage, sandboxed iframe)
-    // → If reading token fails, ignore the error and continue without auth header.
-    try {
-      const t = localStorage.getItem("access_token");
-      if (t) defaultHeaders["Authorization"] = `Bearer ${t}`;
-    } catch {}
   }
 
   const reqConfig: RequestInit = {
@@ -72,7 +32,7 @@ const call = async <TBody, TData = any>(config: ApiConfig<TBody>): Promise<ApiRe
     ...options,
     body: method !== Method.GET ? finalBody : undefined,
   };
-  
+
   if (abortKey) {
     controller = requestManager.create(abortKey);
     reqConfig.signal = controller.signal;
@@ -118,6 +78,6 @@ const Delete = <TBody, TData>(apiPath: string, body?: TBody, abortKey?: string, 
   return call<any, TData>({ method: Method.DELETE, apiPath, body, abortKey, options });
 };
 
-const Fetch = { Get, Post, Put, Delete };
+const FetchServer = { Get, Post, Put, Delete };
 
-export default Fetch;
+export default FetchServer;

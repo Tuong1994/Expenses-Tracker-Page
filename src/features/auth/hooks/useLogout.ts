@@ -4,7 +4,7 @@ import { useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { ApiQuery } from "@/services/type";
 import { logout } from "@/services/auth/api";
-import { HttpStatus } from "@/services";
+import { HttpStatus } from "@/services/helper";
 import { routePaths } from "@/common/constant/routers";
 import useMessage from "@/components/UI/ToastMessage/useMessage";
 import useAsync from "@/hooks/features/useAsync";

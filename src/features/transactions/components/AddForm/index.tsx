@@ -7,8 +7,9 @@ import { DatePicker, Form, FormItem, Input, InputNumber, Radio, Select } from "@
 import { ECashflow, EPaymentMode } from "@/services/transactions/enum";
 import { ControlColor } from "@/components/Control/type";
 import { Transaction } from "@/services/transactions/type";
-import { ApiResponse } from "@/services/type";
+import { ApiResponse, List } from "@/services/type";
 import { User } from "@/services/user/type";
+import { Category } from "@/services/category/type";
 import useLayout from "@/components/UI/Layout/useLayout";
 import useForm from "@/components/Control/Form/useForm";
 import useCreateTransaction from "../../hooks/useCreateTransaction";
@@ -19,9 +20,10 @@ const { Paragraph } = Typography;
 
 interface TransactionsFormProps {
   user: ApiResponse<User> | null;
+  categories: ApiResponse<List<Category>> | null
 }
 
-const TransactionsForm: FC<TransactionsFormProps> = ({ user }) => {
+const TransactionsForm: FC<TransactionsFormProps> = ({ user, categories }) => {
   const [openModal, setOpenModal] = useState<boolean>(false);
 
   const t = useTranslations();
@@ -66,9 +68,6 @@ const TransactionsForm: FC<TransactionsFormProps> = ({ user }) => {
           color={layoutColor as ControlColor}
           onFinish={handleSubmit}
         >
-          <FormItem name="createdAt">
-            <DatePicker label={t("common.form.label.date")} />
-          </FormItem>
           <FormItem name="category">
             <Select label={t("common.form.label.category")} />
           </FormItem>
