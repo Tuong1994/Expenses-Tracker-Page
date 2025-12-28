@@ -1,7 +1,7 @@
 "use server";
 
 import { ApiQuery } from "../type";
-import { getApiQuery } from "../helper";
+import { getApiQuery } from "../helpers";
 import { ImageUpload } from "./type";
 import imageApiPaths from "./path";
 import FetchClient from "../fetch.client";

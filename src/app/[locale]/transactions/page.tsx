@@ -4,7 +4,7 @@ import { getTransactions } from "@/services/transactions/api";
 import { getUser } from "@/services/user/api";
 import { ELang } from "@/common/enum";
 import { ApiQuery } from "@/services/type";
-import { getApiQuery } from "@/services/helper";
+import { getApiQuery } from "@/services/helpers";
 import { redirect } from "@/i18n/navigation";
 import { defaultEndDate, defaultStartDate } from "@/data/transaction";
 import { ECashflow, EPaymentMode } from "@/services/transactions/enum";
@@ -56,8 +56,6 @@ const TransactionsPage: NextPage<TransactionsPageProps> = async ({ searchParams,
     delete transactionQuery.langCode;
     return redirect({ href: getApiQuery(transactionQuery), locale });
   }
-
-  console.log("Transaction", transactionsResult);
 
   return (
     <>

@@ -1,4 +1,4 @@
-import { ApiResponseError, BASE_URL, defaultResponse, Method } from "./helper";
+import { apiResponseError, BASE_URL, defaultResponse, Method } from "./helpers";
 import { ApiConfig, ApiResponse } from "./type";
 import { requestManager } from "./manager";
 
@@ -50,10 +50,10 @@ const call = async <TBody, TData = any>(config: ApiConfig<TBody>): Promise<ApiRe
   } catch (error: any) {
     if (error.name === "AbortError") {
       if (abortKey) requestManager.abort(abortKey);
-      return { ...apiResponse, success: false, error: ApiResponseError(-1, error) };
+      return { ...apiResponse, success: false, error: apiResponseError(-1, error) };
     }
     // Network-level error → status is unknown (set 0)
-    return { ...apiResponse, success: false, error: ApiResponseError(0, error) };
+    return { ...apiResponse, success: false, error: apiResponseError(0, error) };
   }
   // Server responded but with an HTTP error (4xx/5xx)
   // → fetch resolved successfully, but res.ok is false.
@@ -62,7 +62,7 @@ const call = async <TBody, TData = any>(config: ApiConfig<TBody>): Promise<ApiRe
     try {
       errJson = await res.json();
     } catch {}
-    return { ...apiResponse, success: false, error: ApiResponseError(res.status, errJson) };
+    return { ...apiResponse, success: false, error: apiResponseError(res.status, errJson) };
   }
   const data = await res.json();
   return { ...apiResponse, success: true, data };

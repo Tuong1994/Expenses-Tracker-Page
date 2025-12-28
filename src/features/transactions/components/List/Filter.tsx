@@ -11,7 +11,7 @@ import { SelectProps } from "@/components/Control/Select";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { useSelectOptions } from "@/hooks";
-import { getApiQuery } from "@/services/helper";
+import { getApiQuery } from "@/services/helpers";
 import DateFilter from "@/components/Page/DateFilter";
 import useLayout from "@/components/UI/Layout/useLayout";
 import utils from "@/utils";

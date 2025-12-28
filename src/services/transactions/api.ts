@@ -1,6 +1,6 @@
 "use server";
 
-import { getApiQuery } from "../helper";
+import { getApiQuery } from "../helpers";
 import { ApiQuery, Paging } from "../type";
 import { transactionApiPaths } from "./path";
 import { Transaction } from "./type";
@@ -40,13 +40,16 @@ export const updateTransaction = async (query: ApiQuery, data: Transaction) => {
     data,
     "updateTransaction"
   );
+  if (response.success) revalidateTag("transactions");
   return response;
 };
 
 export const removeTransactions = async (query: ApiQuery) => {
   const response = await FetchServer.Delete<any, any>(
     transactionApiPaths.remove + getApiQuery(query),
+    null,
     "removeTransactions"
   );
+  if (response.success) revalidateTag("transactions");
   return response;
 };

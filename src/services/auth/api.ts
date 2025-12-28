@@ -1,4 +1,4 @@
-import { getApiQuery } from "../helper";
+import { getApiQuery } from "../helpers";
 import { ApiQuery } from "../type";
 import {
   Auth,
@@ -9,7 +9,7 @@ import {
   AuthForgotPassword,
   AuthResetPassword,
 } from "./type";
-import { BASE_URL } from "../helper";
+import { BASE_URL } from "../helpers";
 import authApiPaths from "./path";
 import localStorageKey from "@/common/constant/storage";
 import FetchClient from "../fetch.client";

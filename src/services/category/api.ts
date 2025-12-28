@@ -1,7 +1,7 @@
 "use server";
 
 import FetchServer from "../fetch.server";
-import { getApiQuery } from "../helper";
+import { getApiQuery } from "../helpers";
 import { ApiQuery, List, Paging } from "../type";
 import { categoryApiPaths } from "./path";
 import { Category, CategoryReqBody } from "./type";

@@ -22,6 +22,9 @@
       "clothing": "Quần áo",
       "others": "Khác"
     },
+    "description": {
+      "remove": "Bạn có muốn xóa {num} dòng đã chọn không"
+    },
     "form": {
       "label": {
         "account": "Tài khoản",

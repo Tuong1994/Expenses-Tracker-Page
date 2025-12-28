@@ -1,11 +1,11 @@
 "use client";
 
 import { signIn } from "@/services/auth/api";
-import { AuthSignIn } from "@/services/auth/type";
+import { Auth, AuthSignIn } from "@/services/auth/type";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { routePaths } from "@/common/constant/routers";
-import { HttpStatus } from "@/services/helper";
+import { apiIsAbort, HttpStatus } from "@/services/helpers";
 import useMessage from "@/components/UI/ToastMessage/useMessage";
 import useAsync from "@/hooks/features/useAsync";
 
@@ -22,6 +22,7 @@ const useSignIn = () => {
     const response = await call(formData);
 
     if (!response.success) {
+      if (apiIsAbort<Auth>(response)) return;
       const status = response.error?.status;
       let message = t("error.api");
       if (status === HttpStatus.NOT_FOUND) message = t("error.authEmail");

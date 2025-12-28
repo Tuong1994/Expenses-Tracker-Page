@@ -3,7 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { getBalances, getRecentTransactions, getSummary, getTotalExpenses } from "@/services/dashboard/api";
 import { redirect } from "@/i18n/navigation";
 import { ELang } from "@/common/enum";
-import { getApiQuery } from "@/services/helper";
+import { getApiQuery } from "@/services/helpers";
 import { defaultEndDate, defaultStartDate } from "@/data/transaction";
 import PageTitle from "@/components/Page/PageTitle";
 import Summary from "@/features/dashboard/Summary";

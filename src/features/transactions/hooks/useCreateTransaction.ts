@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { Transaction } from "@/services/transactions/type";
 import { createTransaction } from "@/services/transactions/api";
+import { apiIsAbort } from "@/services/helpers";
 import useMessage from "@/components/UI/ToastMessage/useMessage";
 import useAsync from "@/hooks/features/useAsync";
 
@@ -17,10 +18,11 @@ const useCreateTransaction = () => {
     const response = await call(formData);
 
     if (!response.success) {
-      messageApi.error("error.create");
+      if(apiIsAbort<Transaction>(response)) return;
+      return messageApi.error(t("error.create"));
     }
 
-    messageApi.success("success.create");
+    messageApi.success(t("success.create"));
   };
 
   return { isLoading, isSuccess, isError, onCreateTransaction };

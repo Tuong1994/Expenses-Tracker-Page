@@ -25,13 +25,18 @@ export const LIST_LIMIT_ITEMS = 20;
 
 export const defaultResponse = <T>(): ApiResponse<T> => ({ data: {} as T, success: false });
 
-export const ApiResponseError = (status: number, error: any) => {
+export const apiResponseError = (status: number, error: any) => {
   let responseError: ResponseError = { status: 0, message: "" };
   responseError = {
     status: status ? status : 0,
     message: error?.message ? error?.message : "Invalid",
   };
   return responseError;
+};
+
+export const apiIsAbort = <T>(response: ApiResponse<T>) => {
+  const status = response.error?.status ?? 0;
+  return status === 0 || status === -1;
 };
 
 export const getApiQuery = (query: ApiQuery) => {

@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useState } from "react";
+import { FC, Key, useState } from "react";
 import { Columns, TableColor } from "@/components/UI/Table/type";
 import { Transaction } from "@/services/transactions/type";
 import { Flex, Typography, Table, Card, Button, Space, Drawer } from "@/components/UI";
@@ -11,13 +11,15 @@ import { useTranslations } from "next-intl";
 import { useViewpoint } from "@/hooks";
 import { useRouter } from "@/i18n/navigation";
 import { useSearchParams } from "next/navigation";
-import { getApiQuery } from "@/services/helper";
+import { getApiQuery } from "@/services/helpers";
 import TransactionsListFilter from "./Filter";
 import CategoryType from "@/components/Page/Transaction/CategoryType";
 import PaymentMode from "@/components/Page/Transaction/PaymentMode";
 import Cashflow from "@/components/Page/Transaction/Cashflow";
 import Amount from "@/components/Page/Transaction/Amount";
+import ConfirmModal from "./ConfirmModal";
 import ErrorMessage from "@/components/Page/ErrorMessage";
+import useRemoveTransactions from "../../hooks/useRemoveTransactions";
 import useLayout from "@/components/UI/Layout/useLayout";
 import moment from "moment";
 
@@ -31,24 +33,30 @@ interface TransactionsListProps {
   categories: ApiResponse<List<Category>> | null;
 }
 
+type Confirmed = { open: boolean; ids: Key[] };
+
 const TransactionsList: FC<TransactionsListProps> = ({ query, transactions, categories }) => {
+  const [openFilter, setOpenFilter] = useState<boolean>(false);
+
+  const [confirmed, setConfirmed] = useState<Confirmed>({ open: false, ids: [] });
+
   const t = useTranslations();
 
   const router = useRouter();
 
   const searchParams = useSearchParams();
 
-  const pageParam = searchParams.get("page");
+  const { isLoading, onRemoveTransactions } = useRemoveTransactions();
 
   const { isPhone, isTablet } = useViewpoint();
 
   const { layoutValue } = useLayout();
 
-  const [openFilter, setOpenFilter] = useState<boolean>(false);
-
   const { layoutColor } = layoutValue;
 
   const isMobile = isPhone || isTablet;
+
+  const pageParam = searchParams.get("page");
 
   const currentPage = pageParam ? Number(pageParam) : 1;
 
@@ -101,6 +109,10 @@ const TransactionsList: FC<TransactionsListProps> = ({ query, transactions, cate
 
   const handleTriggerDrawer = () => setOpenFilter(!openFilter);
 
+  const handleOpenConfirm = (ids: Key[]) => setConfirmed((prev) => ({ ...prev, open: true, ids }));
+
+  const handleCloseConfirm = () => setConfirmed((prev) => ({ ...prev, open: false, ids: [] }));
+
   const handleChangePage = (page: number) => {
     let queries: Record<string, string | number> = {};
     for (let [key, value] of searchParams.entries()) {
@@ -109,6 +121,12 @@ const TransactionsList: FC<TransactionsListProps> = ({ query, transactions, cate
       else queries = { ...queries, [key]: value };
     }
     router.push(getApiQuery(queries));
+  };
+
+  const handleRemoveTransactions = async () => {
+    const ids = confirmed.ids.join(",");
+    await onRemoveTransactions({ ids });
+    handleCloseConfirm();
   };
 
   return (
@@ -123,8 +141,11 @@ const TransactionsList: FC<TransactionsListProps> = ({ query, transactions, cate
             </Space>
           )}
           <Table<Transaction>
+            rowKey="id"
             hasRowSelection
             hasPagination
+            showRemove={confirmed.open}
+            loading={isLoading}
             columns={columns}
             dataSource={dataSource}
             color={layoutColor as TableColor}
@@ -133,6 +154,7 @@ const TransactionsList: FC<TransactionsListProps> = ({ query, transactions, cate
               total: transactions.data.totalItems ?? 10,
             }}
             onChangePage={handleChangePage}
+            onSelectRows={handleOpenConfirm}
           />
         </FlexCol>
         <FlexCol xs={0} span={6}>
@@ -144,6 +166,9 @@ const TransactionsList: FC<TransactionsListProps> = ({ query, transactions, cate
       <Drawer head={filterHead} open={openFilter} onClose={handleTriggerDrawer}>
         <TransactionsListFilter query={query} categories={categories} />
       </Drawer>
+      <ConfirmModal open={confirmed.open} onOk={handleRemoveTransactions} onCancel={handleCloseConfirm}>
+        <Paragraph>{t("common.description.remove", { num: String(confirmed.ids.length) })} ?</Paragraph>
+      </ConfirmModal>
     </>
   );
 };

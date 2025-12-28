@@ -1,7 +1,7 @@
 "use server";
 
 import FetchServer from "../fetch.server";
-import { getApiQuery } from "../helper";
+import { getApiQuery } from "../helpers";
 import { Transaction } from "../transactions/type";
 import { ApiQuery } from "../type";
 import { statisticApiPaths } from "./path";

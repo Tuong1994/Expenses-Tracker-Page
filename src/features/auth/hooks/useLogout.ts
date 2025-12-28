@@ -4,7 +4,7 @@ import { useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { ApiQuery } from "@/services/type";
 import { logout } from "@/services/auth/api";
-import { HttpStatus } from "@/services/helper";
+import { apiIsAbort, HttpStatus } from "@/services/helpers";
 import { routePaths } from "@/common/constant/routers";
 import useMessage from "@/components/UI/ToastMessage/useMessage";
 import useAsync from "@/hooks/features/useAsync";
@@ -22,6 +22,7 @@ const useLogout = () => {
     const response = await call(query);
 
     if (!response.success) {
+      if(apiIsAbort(response)) return;
       const status = response.error?.status;
       let message = t("error.api");
       if (status === HttpStatus.FORBIDDEN) message = t("error.logout");

@@ -2,7 +2,7 @@
 
 import { ApiQuery, Paging } from "../type";
 import { User } from "./type";
-import { getApiQuery } from "../helper";
+import { getApiQuery } from "../helpers";
 import FetchServer from "../fetch.server";
 import userApiPaths from "./path";
 
