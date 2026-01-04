@@ -17,13 +17,11 @@ interface SideProfileProps {
 const SideProfile: FC<SideProfileProps> = ({ user }) => {
   const { layoutValue } = useLayout();
 
-  const { isLoading, onLogout } = useLogout();
+  const { isLoading, mutate: onLogout } = useLogout();
 
   const isError = !user || user === null || !user.success;
 
-  console.log("User", user)
-
-  const handleLogout = async () => await onLogout({ userId: "US_1" });
+  const handleLogout = () => onLogout({ userId: !isError ? user.data.id : "" });
 
   if (isError)
     return (

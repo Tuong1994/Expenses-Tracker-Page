@@ -6,8 +6,8 @@ import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { routePaths } from "@/common/constant/routers";
 import { apiIsAbort, HttpStatus } from "@/services/helpers";
+import { useMutation } from "react-query";
 import useMessage from "@/components/UI/ToastMessage/useMessage";
-import useAsync from "@/hooks/features/useAsync";
 
 const useSignIn = () => {
   const t = useTranslations("common.message");
@@ -16,27 +16,30 @@ const useSignIn = () => {
 
   const router = useRouter();
 
-  const { isLoading, isSuccess, isError, call } = useAsync(signIn);
-
   const onSignIn = async (formData: AuthSignIn) => {
-    const response = await call(formData);
-
-    if (!response.success) {
-      if (apiIsAbort<Auth>(response)) return;
-      const status = response.error?.status;
-      let message = t("error.api");
-      if (status === HttpStatus.NOT_FOUND) message = t("error.authEmail");
-      if (status === HttpStatus.FORBIDDEN) message = t("error.authPassword");
-      if (status === HttpStatus.UNAUTHORIZED) message = t("error.unauthorized");
-      return messageApi.error(message);
-    }
-
-    messageApi.success(t("success.signIn"));
-    router.replace(routePaths.DASHBOARD);
-    router.refresh();
+    const response = await signIn(formData);
+    return response;
   };
 
-  return { isLoading, isSuccess, isError, onSignIn };
+  const mutations = useMutation(onSignIn, {
+    onSuccess: (response) => {
+      if (!response.success) {
+        if (apiIsAbort<Auth>(response)) return;
+        const status = response.error?.status;
+        let message = t("error.api");
+        if (status === HttpStatus.NOT_FOUND) message = t("error.authEmail");
+        if (status === HttpStatus.FORBIDDEN) message = t("error.authPassword");
+        if (status === HttpStatus.UNAUTHORIZED) message = t("error.unauthorized");
+        return messageApi.error(message);
+      }
+      messageApi.success(t("success.signIn"));
+      router.replace(routePaths.DASHBOARD);
+      router.refresh();
+    },
+    onError: () => messageApi.error("error.api"),
+  });
+
+  return mutations;
 };
 
 export default useSignIn;

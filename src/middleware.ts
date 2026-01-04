@@ -6,7 +6,7 @@ import cookieKey from "./common/constant/cookies";
 
 const intlMiddleware = createMiddleware(routing);
 
-const PUBLIC_ROUTES = [routePaths.SIGN_IN, routePaths.SIGN_UP, routePaths.FORGOT_PASSWORD] as string[];
+const PUBLIC_ROUTES = [routePaths.SIGN_IN, routePaths.SIGN_UP, routePaths.FORGOT_PASSWORD, routePaths.RESET_PASSWORD] as string[];
 
 export default function middleware(request: NextRequest) {
   // 1. Chạy intlMiddleware trước để lấy locale chính xác (đã xử lý cookie)
@@ -21,6 +21,7 @@ export default function middleware(request: NextRequest) {
   const locale = intlResponse.headers.get("x-next-intl-locale") || routing.defaultLocale;
 
   const pathname = request.nextUrl.pathname;
+
   const pathWithoutLocale = pathname.replace(`/${locale}`, "") || "/";
 
   const isPublic = PUBLIC_ROUTES.includes(pathWithoutLocale);
@@ -29,15 +30,15 @@ export default function middleware(request: NextRequest) {
 
   // Chưa login → vào private route
   if (!token && !isPublic) {
-    const signInUrl = new URL(`/${locale}${routePaths.SIGN_IN}`, request.url);
-    return NextResponse.redirect(signInUrl);
-  }
+  request.nextUrl.pathname = routePaths.SIGN_IN;
+  return NextResponse.redirect(request.nextUrl);
+}
 
   // Đã login → vào auth pages (bỏ comment nếu cần)
   if (token && isPublic) {
-    const homeUrl = new URL(`/${locale}/`, request.url);
-    return NextResponse.redirect(homeUrl);
-  }
+  request.nextUrl.pathname = "/";
+  return NextResponse.redirect(request.nextUrl);
+}
 
   // Các trường hợp còn lại: return intlResponse đã xử lý
   return intlResponse;

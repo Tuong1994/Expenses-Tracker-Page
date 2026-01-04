@@ -1,5 +1,8 @@
+"use client"
+
 import { forwardRef, ForwardRefRenderFunction, ReactNode } from "react";
 import { Divider, Layout, Section } from "@/components/UI";
+import { QueryClient, QueryClientProvider } from "react-query";
 import { ApiResponse } from "@/services/type";
 import { User } from "@/services/user/type";
 import Header from "./Header";
@@ -14,23 +17,36 @@ interface AppMainProps {
   user: ApiResponse<User> | null;
 }
 
-const AppMain: ForwardRefRenderFunction<HTMLDivElement, AppMainProps> = ({ children, user, isAuth }) => {
-  if (!isAuth) return children;
+const AppMain: ForwardRefRenderFunction<HTMLDivElement, AppMainProps> = ({ children, user, isAuth }, ref) => {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchInterval: 0,
+        refetchOnWindowFocus: false,
+      },
+    },
+  });
 
   return (
-    <Container>
-      <Header />
-      <Body>
-        <Side rootClassName="p-5!">
-          <Profile user={user} />
-          <Divider />
-          <Menu />
-        </Side>
-        <Content rootClassName="bg-gray-100!">
-          <Section>{children}</Section>
-        </Content>
-      </Body>
-    </Container>
+    <QueryClientProvider client={queryClient}>
+      {!isAuth ? (
+        children
+      ) : (
+        <Container ref={ref}>
+          <Header />
+          <Body>
+            <Side rootClassName="p-5!">
+              <Profile user={user} />
+              <Divider />
+              <Menu />
+            </Side>
+            <Content rootClassName="bg-gray-100!">
+              <Section>{children}</Section>
+            </Content>
+          </Body>
+        </Container>
+      )}
+    </QueryClientProvider>
   );
 };
 

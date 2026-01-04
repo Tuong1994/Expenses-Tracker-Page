@@ -17,7 +17,7 @@ interface SignInForm {}
 const SignInForm: FC<SignInForm> = () => {
   const t = useTranslations();
 
-  const { isLoading, onSignIn } = useSignIn();
+  const { isLoading, mutate: onSignIn } = useSignIn();
 
   const { email, password } = useFormRule();
 
@@ -30,7 +30,7 @@ const SignInForm: FC<SignInForm> = () => {
     password: "",
   };
 
-  const handleFinish = async (formData: AuthSignIn) => await onSignIn(formData);
+  const handleFinish = (formData: AuthSignIn) => onSignIn(formData);
 
   return (
     <Form<AuthSignIn>

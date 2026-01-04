@@ -10,6 +10,7 @@ import { routePaths } from "@/common/constant/routers";
 import { useTranslations } from "next-intl";
 import { useFormRule } from "@/hooks";
 import useLayout from "@/components/UI/Layout/useLayout";
+import useSignUp from "../hooks/useSignUp";
 
 const { Paragraph } = Typography;
 
@@ -18,7 +19,9 @@ interface SignInForm {}
 const SignInForm: FC<SignInForm> = () => {
   const t = useTranslations();
 
-  const { email, password } = useFormRule();
+  const { email, password, phone } = useFormRule();
+
+  const { isLoading, mutate: onSignUp } = useSignUp();
 
   const { layoutValue } = useLayout();
 
@@ -30,18 +33,26 @@ const SignInForm: FC<SignInForm> = () => {
     phone: "",
   };
 
+  const handleFinish = (formData: AuthSignUp) => onSignUp(formData);
+
   return (
-    <Form<AuthSignUp> sizes="lg" color={layoutColor as ControlColor} initialData={initialData}>
-      <FormItem name="email">
+    <Form<AuthSignUp>
+      sizes="lg"
+      disabled={isLoading}
+      color={layoutColor as ControlColor}
+      initialData={initialData}
+      onFinish={handleFinish}
+    >
+      <FormItem name="email" rules={email()}>
         <Input required label={t("common.form.label.email")} />
       </FormItem>
-      <FormItem name="password">
+      <FormItem name="password" rules={password()}>
         <InputPassword required label={t("common.form.label.password")} />
       </FormItem>
-      <FormItem name="phone">
+      <FormItem name="phone" rules={phone()}>
         <InputPhone required label={t("common.form.label.phone")} />
       </FormItem>
-      <Button sizes="lg" rootClassName="w-full! my-10!">
+      <Button loading={isLoading} sizes="lg" rootClassName="w-full! my-10!">
         {t("auth.signUp.title")}
       </Button>
       <Space justify="center" aligns="middle">

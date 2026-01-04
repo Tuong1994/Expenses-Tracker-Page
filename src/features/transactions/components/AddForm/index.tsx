@@ -31,7 +31,7 @@ const TransactionsForm: FC<TransactionsFormProps> = ({ user, categories }) => {
 
   const form = useForm();
 
-  const { isLoading, onCreateTransaction } = useCreateTransaction();
+  const { isLoading, mutate: onCreateTransaction } = useCreateTransaction();
 
   const { layoutValue } = useLayout();
 

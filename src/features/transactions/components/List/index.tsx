@@ -46,7 +46,7 @@ const TransactionsList: FC<TransactionsListProps> = ({ query, transactions, cate
 
   const searchParams = useSearchParams();
 
-  const { isLoading, onRemoveTransactions } = useRemoveTransactions();
+  const { isLoading, mutate: onRemoveTransactions } = useRemoveTransactions();
 
   const { isPhone, isTablet } = useViewpoint();
 

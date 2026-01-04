@@ -4,28 +4,31 @@ import { ApiQuery } from "@/services/type";
 import { apiIsAbort } from "@/services/helpers";
 import { removeTransactions } from "@/services/transactions/api";
 import { useTranslations } from "next-intl";
+import { useMutation } from "react-query";
 import useMessage from "@/components/UI/ToastMessage/useMessage";
-import useAsync from "@/hooks/features/useAsync";
 
 const useRemoveTransactions = () => {
   const t = useTranslations("common.message");
 
   const messageApi = useMessage();
 
-  const { isLoading, isSuccess, isError, call } = useAsync(removeTransactions);
-
   const onRemoveTransactions = async (query: ApiQuery) => {
-    const response = await call(query);
-
-    if (!response.success) {
-      if (apiIsAbort(response)) return;
-      return messageApi.error(t("error.remove"));
-    }
-
-    return messageApi.success(t("success.remove"));
+    const response = await removeTransactions(query);
+    return response;
   };
 
-  return { isLoading, isSuccess, isError, onRemoveTransactions };
+  const mutations = useMutation(onRemoveTransactions, {
+    onSuccess: (response) => {
+      if (!response.success) {
+        if (apiIsAbort(response)) return;
+        return messageApi.error(t("error.remove"));
+      }
+      return messageApi.success(t("success.remove"));
+    },
+    onError: () => messageApi.error("error.api"),
+  });
+
+  return mutations;
 };
 
 export default useRemoveTransactions;
