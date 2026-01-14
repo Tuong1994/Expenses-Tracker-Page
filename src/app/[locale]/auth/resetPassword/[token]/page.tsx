@@ -4,14 +4,16 @@ import AuthMain from "@/features/auth/components/AuthMain";
 import ResetPasswordForm from "@/features/auth/components/ResetPassword";
 import withLocale from "@/libs/withLocale";
 
-interface ResetPasswordPageProps {}
+interface ResetPasswordPageProps {
+  resetPasswordToken: string;
+}
 
-const ResetPasswordPage: NextPage<ResetPasswordPageProps> = async () => {
+const ResetPasswordPage: NextPage<ResetPasswordPageProps> = async ({ resetPasswordToken }) => {
   const t = await getTranslations("auth");
 
   return (
     <AuthMain title={t("resetPassword.title")}>
-      <ResetPasswordForm />
+      <ResetPasswordForm token={resetPasswordToken} />
     </AuthMain>
   );
 };

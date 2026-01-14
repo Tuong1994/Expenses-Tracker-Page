@@ -6,47 +6,53 @@ import cookieKey from "./common/constant/cookies";
 
 const intlMiddleware = createMiddleware(routing);
 
-const PUBLIC_ROUTES = [routePaths.SIGN_IN, routePaths.SIGN_UP, routePaths.FORGOT_PASSWORD, routePaths.RESET_PASSWORD] as string[];
+const PUBLIC_ROUTES = [
+  routePaths.SIGN_IN,
+  routePaths.SIGN_UP,
+  routePaths.FORGOT_PASSWORD,
+  routePaths.RESET_PASSWORD,
+] as string[];
 
 export default function middleware(request: NextRequest) {
-  // 1. Chạy intlMiddleware trước để lấy locale chính xác (đã xử lý cookie)
   const intlResponse = intlMiddleware(request);
 
-  // Nếu intlMiddleware đã redirect (ví dụ: 307 khi switch locale), return luôn
+  // Nếu intlMiddleware đã redirect (switch locale, etc.), return luôn
   if (intlResponse.status >= 300 && intlResponse.status < 400) {
     return intlResponse;
   }
 
-  // Lấy locale từ header mà next-intl inject (đảm bảo là locale mới nhất)
-  const locale = intlResponse.headers.get("x-next-intl-locale") || routing.defaultLocale;
-
   const pathname = request.nextUrl.pathname;
 
-  const pathWithoutLocale = pathname.replace(`/${locale}`, "") || "/";
+  // Lấy locale chính xác từ header mà next-intl đã set
+  const locale =
+    routing.locales.find((loc) => pathname === `/${loc}` || pathname.startsWith(`/${loc}/`)) ??
+    routing.defaultLocale;
 
-  const isPublic = PUBLIC_ROUTES.includes(pathWithoutLocale);
+  // Loại bỏ locale prefix để kiểm tra route thực tế
+  const pathWithoutLocale = pathname.startsWith(`/${locale}`)
+    ? pathname.slice(locale.length + 1) || "/"
+    : pathname || "/";
+
+  const isPublicBase = PUBLIC_ROUTES.includes(pathWithoutLocale);
+  const isResetPasswordWithToken = pathWithoutLocale.startsWith(routePaths.RESET_PASSWORD + '/');
+  const isPublic = isPublicBase || isResetPasswordWithToken;
 
   const token = request.cookies.get(cookieKey.TOKEN)?.value;
 
-  // Chưa login → vào private route
+  // Chưa login → truy cập private route
   if (!token && !isPublic) {
-  request.nextUrl.pathname = routePaths.SIGN_IN;
-  return NextResponse.redirect(request.nextUrl);
-}
+    return NextResponse.redirect(new URL(`/${locale}${routePaths.SIGN_IN}`, request.url));
+  }
 
-  // Đã login → vào auth pages (bỏ comment nếu cần)
+  // Đã login → truy cập public/auth pages
   if (token && isPublic) {
-  request.nextUrl.pathname = "/";
-  return NextResponse.redirect(request.nextUrl);
-}
+    return NextResponse.redirect(new URL(`/${locale}${routePaths.DASHBOARD}`, request.url));
+  }
 
-  // Các trường hợp còn lại: return intlResponse đã xử lý
+  // Các trường hợp còn lại: pass through intlResponse (đã có header locale)
   return intlResponse;
 }
 
 export const config = {
-  // Match all pathnames except for
-  // - … if they start with `/api`, `/trpc`, `/_next` or `/_vercel`
-  // - … the ones containing a dot (e.g. `favicon.ico`)
   matcher: "/((?!api|trpc|_next|_vercel|.*\\..*).*)",
 };

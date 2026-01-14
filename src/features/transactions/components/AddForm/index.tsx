@@ -54,8 +54,8 @@ const TransactionsForm: FC<TransactionsFormProps> = ({ user, categories }) => {
 
   const handleTriggerModal = () => setOpenModal(!openModal);
 
-  const handleSubmit = async (formData: Transaction) => {
-    await onCreateTransaction(formData);
+  const handleSubmit = (formData: Transaction) => {
+    onCreateTransaction(formData);
     handleTriggerModal()
   };
 

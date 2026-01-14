@@ -9,11 +9,17 @@ import { Link } from "@/i18n/navigation";
 import { routePaths } from "@/common/constant/routers";
 import { useTranslations } from "next-intl";
 import useLayout from "@/components/UI/Layout/useLayout";
+import useForgotPassword from "../hooks/useForgotPassword";
+import { ELang } from "@/common/enum";
 
-interface ForgotPasswordForm {}
+interface ForgotPasswordForm {
+  locale: string;
+}
 
-const ForgotPasswordForm: FC<ForgotPasswordForm> = () => {
+const ForgotPasswordForm: FC<ForgotPasswordForm> = ({ locale }) => {
   const t = useTranslations();
+
+  const { isLoading, mutate: onForgotPassword } = useForgotPassword();
 
   const { layoutValue } = useLayout();
 
@@ -23,13 +29,26 @@ const ForgotPasswordForm: FC<ForgotPasswordForm> = () => {
     email: "",
   };
 
+  const handleFinish = (formData: AuthForgotPassword) => {
+    const args = { query: { langCode: locale as ELang }, formData };
+    onForgotPassword(args);
+  };
+
   return (
-    <Form<AuthForgotPassword> sizes="lg" color={layoutColor as ControlColor} initialData={initialData}>
+    <Form<AuthForgotPassword>
+      sizes="lg"
+      disabled={isLoading}
+      color={layoutColor as ControlColor}
+      initialData={initialData}
+      onFinish={handleFinish}
+    >
       <FormItem name="email">
         <Input required label={t("common.form.label.email")} />
       </FormItem>
       <Space aligns="middle">
-        <Button sizes="lg">{t("auth.forgotPassword.action")}</Button>
+        <Button sizes="lg" loading={isLoading}>
+          {t("auth.forgotPassword.action")}
+        </Button>
         <span>|</span>
         <Link href={routePaths.SIGN_IN}>
           <Button text>{t("auth.signIn.title")}</Button>

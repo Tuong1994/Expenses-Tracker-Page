@@ -49,16 +49,17 @@ const call = async <TBody, TData = any>(config: ApiConfig<TBody>): Promise<ApiRe
     // Network-level error → status is unknown (set 0)
     return { ...apiResponse, success: false, error: apiResponseError(0, error) };
   }
+  const isJson = res.headers.get("content-type")?.includes("application/json");
   // Server responded but with an HTTP error (4xx/5xx)
   // → fetch resolved successfully, but res.ok is false.
   if (!res.ok) {
     let errJson: any = null;
     try {
-      errJson = await res.json();
+      errJson = isJson ? await res.json() : await res.text();
     } catch {}
     return { ...apiResponse, success: false, error: apiResponseError(res.status, errJson) };
   }
-  const data = await res.json();
+  const data = isJson ? await res.json() : await res.text();
   return { ...apiResponse, success: true, data };
 };
 

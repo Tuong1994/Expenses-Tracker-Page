@@ -132,12 +132,14 @@
         "signIn": "Sign in success",
         "signUp": "Sign up success",
         "logout": "Logouted",
+        "forgotPassword": "Your request has been sent, please check your email",
         "changePassword": "Password has been changed",
         "resetPassword": "Password has been reset"
       },
       "error": {
         "authEmail": "Email is not correct. Please try again",
         "authPassword": "Password is not correct. Please try again",
+        "resetPassword": "Your request has been expired, please try again",
         "emailExist": "Email is already exist",
         "create": "Error! Cannot create",
         "update": "Error! Cannot update",

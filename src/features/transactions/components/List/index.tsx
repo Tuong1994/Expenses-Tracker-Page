@@ -123,9 +123,9 @@ const TransactionsList: FC<TransactionsListProps> = ({ query, transactions, cate
     router.push(getApiQuery(queries));
   };
 
-  const handleRemoveTransactions = async () => {
+  const handleRemoveTransactions = () => {
     const ids = confirmed.ids.join(",");
-    await onRemoveTransactions({ ids });
+    onRemoveTransactions({ ids });
     handleCloseConfirm();
   };
 

@@ -132,12 +132,14 @@
         "signIn": "Đăng nhập thành công",
         "signUp": "Đăng ký thành công",
         "logout": "Đã đăng xuất",
+        "forgotPassword": "Yêu cầu của bạn đã được gửi, vui lòng kiểm tra email của bạn",
         "changePassword": "Mật khẩu đã được thay đổi",
         "resetPassword": "Mật khẩu đã được đặt lại"
       },
       "error": {
         "authEmail": "Email không đúng. Vui lòng thử lại",
         "authPassword": "Mật khẩu không đúng. Vui lòng thử lại",
+        "resetPassword": "Yêu cầu của bạn đã hết hạn, vui lòng thử lại.",
         "emailExist": "Email này đã tồn tại",
         "create": "Lỗi! Không thể tạo",
         "update": "Lỗi! Không thể cập nhật",

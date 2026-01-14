@@ -4,14 +4,16 @@ import AuthMain from "@/features/auth/components/AuthMain";
 import ForgotPasswordForm from "@/features/auth/components/ForgotPasswordForm";
 import withLocale from "@/libs/withLocale";
 
-interface ForgotPasswordPageProps {}
+interface ForgotPasswordPageProps {
+  locale: string;
+}
 
-const ForgotPasswordPage: NextPage<ForgotPasswordPageProps> = async () => {
+const ForgotPasswordPage: NextPage<ForgotPasswordPageProps> = async ({ locale }) => {
   const t = await getTranslations();
 
   return (
     <AuthMain title={t("auth.forgotPassword.title")}>
-      <ForgotPasswordForm />
+      <ForgotPasswordForm locale={locale} />
     </AuthMain>
   );
 };

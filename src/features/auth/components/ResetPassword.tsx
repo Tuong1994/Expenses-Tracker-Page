@@ -5,17 +5,21 @@ import { Form, FormItem, InputPassword } from "@/components/Control";
 import { AuthResetPassword } from "@/services/auth/type";
 import { ControlColor } from "@/components/Control/type";
 import { Button } from "@/components/UI";
-import { routePaths } from "@/common/constant/routers";
 import { useFormRule } from "@/hooks";
 import { useTranslations } from "next-intl";
 import useLayout from "@/components/UI/Layout/useLayout";
+import useResetPassword from "../hooks/useResetPassword";
 
-interface ResetPasswordForm {}
+interface ResetPasswordForm {
+  token: string;
+}
 
-const ResetPasswordForm: FC<ResetPasswordForm> = () => {
+const ResetPasswordForm: FC<ResetPasswordForm> = ({ token }) => {
   const t = useTranslations();
 
-  const { email, password } = useFormRule();
+  const { match, password } = useFormRule();
+
+  const { isLoading, mutate: onResetPassword } = useResetPassword();
 
   const { layoutValue } = useLayout();
 
@@ -24,25 +28,26 @@ const ResetPasswordForm: FC<ResetPasswordForm> = () => {
   const initialData: AuthResetPassword = {
     resetPassword: "",
     confirmPassword: "",
-    token: "",
+    token,
   };
 
-  const handleFinish = (formData: AuthResetPassword) => {};
+  const handleFinish = (formData: AuthResetPassword) => onResetPassword(formData)
 
   return (
     <Form<AuthResetPassword>
       sizes="lg"
+      disabled={isLoading}
       color={layoutColor as ControlColor}
       initialData={initialData}
       onFinish={handleFinish}
     >
-      <FormItem name="email" rules={email()}>
+      <FormItem name="resetPassword" rules={password()}>
         <InputPassword required label={t("common.form.label.newPassword")} />
       </FormItem>
-      <FormItem name="password" rules={password()}>
+      <FormItem name="confirmPassword">
         <InputPassword required label={t("common.form.label.confirmPassword")} />
       </FormItem>
-      <Button sizes="lg" rootClassName="w-full! my-5!">
+      <Button sizes="lg" loading={isLoading} rootClassName="w-full! my-5!">
         {t("auth.resetPassword.title")}
       </Button>
     </Form>
