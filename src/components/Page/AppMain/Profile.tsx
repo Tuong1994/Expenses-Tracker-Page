@@ -7,6 +7,7 @@ import { ApiResponse } from "@/services/type";
 import { User } from "@/services/user/type";
 import useLayout from "@/components/UI/Layout/useLayout";
 import useLogout from "@/features/auth/hooks/useLogout";
+import useRefreshToken from "@/features/auth/hooks/useRefreshToken";
 
 const { Paragraph } = Typography;
 
@@ -19,9 +20,13 @@ const SideProfile: FC<SideProfileProps> = ({ user }) => {
 
   const { isLoading, mutate: onLogout } = useLogout();
 
+  const { isLoading: refreshLoading, mutate: onRefreshToken } = useRefreshToken();
+
   const isError = !user || user === null || !user.success;
 
-  const handleLogout = () => onLogout({ userId: !isError ? user.data.id : "" });
+  const handleLogout = () => onLogout();
+
+  const handleRefresh = () => onRefreshToken();
 
   if (isError)
     return (
@@ -46,6 +51,9 @@ const SideProfile: FC<SideProfileProps> = ({ user }) => {
       </Badge>
       <Button loading={isLoading} onClick={handleLogout}>
         Logout
+      </Button>
+      <Button loading={refreshLoading} onClick={handleRefresh}>
+        Refresh Token
       </Button>
     </div>
   );

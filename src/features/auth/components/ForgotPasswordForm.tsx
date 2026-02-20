@@ -5,12 +5,12 @@ import { Form, FormItem, Input } from "@/components/Control";
 import { Button, Space } from "@/components/UI";
 import { AuthForgotPassword } from "@/services/auth/type";
 import { ControlColor } from "@/components/Control/type";
+import { ELang } from "@/common/enum";
 import { Link } from "@/i18n/navigation";
 import { routePaths } from "@/common/constant/routers";
 import { useTranslations } from "next-intl";
 import useLayout from "@/components/UI/Layout/useLayout";
 import useForgotPassword from "../hooks/useForgotPassword";
-import { ELang } from "@/common/enum";
 
 interface ForgotPasswordForm {
   locale: string;

@@ -8,6 +8,7 @@ import { routePaths } from "@/common/constant/routers";
 import { apiIsAbort, HttpStatus } from "@/services/helpers";
 import { useMutation } from "react-query";
 import useMessage from "@/components/UI/ToastMessage/useMessage";
+import useAuthStore from "@/store/AuthStore";
 
 const useSignIn = () => {
   const t = useTranslations("common.message");
@@ -15,6 +16,8 @@ const useSignIn = () => {
   const messageApi = useMessage();
 
   const router = useRouter();
+
+  const [setAuth] = useAuthStore((state) => [state.setAuth]);
 
   const onSignIn = async (formData: AuthSignIn) => {
     const response = await signIn(formData);
@@ -33,10 +36,11 @@ const useSignIn = () => {
         return messageApi.error(message);
       }
       messageApi.success(t("success.signIn"));
+      setAuth(response.data)
       router.replace(routePaths.DASHBOARD);
       router.refresh();
     },
-    onError: () => messageApi.error("error.api"),
+    onError: () => messageApi.error(t("error.api")),
   });
 
   return mutations;

@@ -1,6 +1,6 @@
 "use client";
 
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Form, FormItem, InputPassword } from "@/components/Control";
 import { AuthResetPassword } from "@/services/auth/type";
 import { ControlColor } from "@/components/Control/type";
@@ -17,6 +17,8 @@ interface ResetPasswordForm {
 const ResetPasswordForm: FC<ResetPasswordForm> = ({ token }) => {
   const t = useTranslations();
 
+  const [newPassword, setNewPassword] = useState<string>("");
+
   const { match, password } = useFormRule();
 
   const { isLoading, mutate: onResetPassword } = useResetPassword();
@@ -31,7 +33,7 @@ const ResetPasswordForm: FC<ResetPasswordForm> = ({ token }) => {
     token,
   };
 
-  const handleFinish = (formData: AuthResetPassword) => onResetPassword(formData)
+  const handleFinish = (formData: AuthResetPassword) => onResetPassword(formData);
 
   return (
     <Form<AuthResetPassword>
@@ -42,9 +44,13 @@ const ResetPasswordForm: FC<ResetPasswordForm> = ({ token }) => {
       onFinish={handleFinish}
     >
       <FormItem name="resetPassword" rules={password()}>
-        <InputPassword required label={t("common.form.label.newPassword")} />
+        <InputPassword
+          required
+          label={t("common.form.label.newPassword")}
+          onChangeInput={(password) => setNewPassword(password)}
+        />
       </FormItem>
-      <FormItem name="confirmPassword">
+      <FormItem name="confirmPassword" rules={match(newPassword)}>
         <InputPassword required label={t("common.form.label.confirmPassword")} />
       </FormItem>
       <Button sizes="lg" loading={isLoading} rootClassName="w-full! my-5!">

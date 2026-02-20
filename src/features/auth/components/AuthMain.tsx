@@ -2,7 +2,7 @@ import { FC, ReactNode } from "react";
 import { Card, Typography, Space } from "@/components/UI";
 import LocaleSwitcher from "@/components/Page/LocaleSwitcher";
 
-const { Title } = Typography;
+const { Title, Paragraph } = Typography;
 
 interface AuthMainProps {
   title?: ReactNode;
@@ -13,7 +13,7 @@ const AuthMain: FC<AuthMainProps> = ({ title, children }) => {
   return (
     <div className="w-full h-screen flex">
       <div className="w-1/2 px-32! flex items-center justify-center">
-        <Card></Card>
+        <Paragraph size={50}>Expenses Tracker</Paragraph>
       </div>
       <div className="w-1/2 flex items-center justify-center bg-emerald-500">
         <div className="w-full px-32!">

@@ -35,7 +35,7 @@ const useSignUp = () => {
       messageApi.success(t("success.signUp"));
       onSignIn(signInData)
     },
-    onError: () => messageApi.error("error.api"),
+    onError: () => messageApi.error(t("error.api")),
   });
 
   return mutations;

@@ -8,6 +8,7 @@ import { apiIsAbort, HttpStatus } from "@/services/helpers";
 import { routePaths } from "@/common/constant/routers";
 import { useMutation } from "react-query";
 import useMessage from "@/components/UI/ToastMessage/useMessage";
+import useAuthStore from "@/store/AuthStore";
 
 const useLogout = () => {
   const t = useTranslations("common.message");
@@ -16,8 +17,10 @@ const useLogout = () => {
 
   const router = useRouter();
 
-  const onLogout = async (query: ApiQuery) => {
-    const response = await logout(query);
+  const [resetAuth] = useAuthStore((state) => [state.resetAuth]);
+
+  const onLogout = async () => {
+    const response = await logout();
     return response;
   };
 
@@ -32,10 +35,11 @@ const useLogout = () => {
       }
 
       messageApi.success(t("success.logout"));
+      resetAuth();
       router.replace(routePaths.SIGN_IN);
       router.refresh();
     },
-    onError: () => messageApi.error("error.api"),
+    onError: () => messageApi.error(t("error.api")),
   });
 
   return mutations;
