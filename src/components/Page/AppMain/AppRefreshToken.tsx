@@ -21,30 +21,28 @@ const AppRefreshToken: FC<AppRefreshTokenProps> = ({ children }) => {
 
   const { isAuth, expired } = auth;
 
+  // Refresh token when first access page
   useEffect(() => {
-    // Nếu không có auth hoặc không phải trạng thái isAuth thì dừng
+    if (isAuth) onRefreshToken();
+  }, []);
+
+  // Refresh token interval
+  useEffect(() => {
     if (!isAuth || !expired) return;
 
     const expiredTime = expired;
+
     const currentTime = Date.now();
 
-    // Tính toán thời gian còn lại (trừ đi 5-10s để refresh trước khi thực sự hết hạn)
     const delay = expiredTime - currentTime - 10000;
 
-    // Nếu token còn hạn, đặt lịch refresh
     if (delay > 0) {
       const timer = setInterval(() => {
         onRefreshToken();
       }, delay);
 
-      // Cleanup: Xóa timer nếu component unmount hoặc token thay đổi sớm
       return () => clearInterval(timer);
-    } else {
-      // Nếu đã hết hạn hoặc sắp hết hạn ngay lập tức
-      onRefreshToken();
     }
-
-    // Quan trọng: Thêm expired và onRefreshToken vào dependency
   }, [expired, isAuth, onRefreshToken]);
 
   useEffect(() => {

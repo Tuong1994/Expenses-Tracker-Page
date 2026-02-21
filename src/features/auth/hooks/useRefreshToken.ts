@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { refresh } from "@/services/auth/api";
 import { useTranslations } from "next-intl";
 import { useMutation } from "react-query";
@@ -7,7 +8,6 @@ import { apiIsAbort } from "@/services/helpers";
 import useMessage from "@/components/UI/ToastMessage/useMessage";
 import useAuthStore from "@/store/AuthStore";
 import localStorageKey from "@/common/constant/storage";
-import { useState } from "react";
 
 const useRefreshToken = () => {
   const t = useTranslations("common.message");
