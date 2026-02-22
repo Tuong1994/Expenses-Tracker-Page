@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, ForwardRefRenderFunction, ReactNode, useEffect } from "react";
+import { forwardRef, ForwardRefRenderFunction, ReactNode } from "react";
 import { Divider, Layout, Section } from "@/components/UI";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ApiResponse } from "@/services/type";

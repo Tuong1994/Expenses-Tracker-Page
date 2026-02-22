@@ -1,9 +1,12 @@
-import { FC } from "react";
+"use client";
+
+import { FC, useEffect } from "react";
 import { Card, Flex, Typography } from "@/components/UI";
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 import { StatisticSummary } from "@/services/dashboard/type";
 import { ApiResponse } from "@/services/type";
 import ErrorMessage from "@/components/Page/ErrorMessage";
+import localStorageKey from "@/common/constant/storage";
 import utils from "@/utils";
 
 const { FlexRow, FlexCol } = Flex;
@@ -14,8 +17,8 @@ interface SummaryProps {
   summary: ApiResponse<StatisticSummary> | null;
 }
 
-const Summary: FC<SummaryProps> = async ({ summary }) => {
-  const t = await getTranslations("dashboard");
+const Summary: FC<SummaryProps> = ({ summary }) => {
+  const t = useTranslations("dashboard");
 
   const isError = !summary || summary === null || !summary.success;
 
@@ -24,6 +27,11 @@ const Summary: FC<SummaryProps> = async ({ summary }) => {
   }
 
   const { data } = summary;
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    localStorage.setItem(localStorageKey.BALANCES, JSON.stringify(data.totalBalance));
+  }, []);
 
   return (
     <FlexRow rootClassName="mb-5!" justify="between" aligns="middle">

@@ -31,7 +31,6 @@ const useRefreshToken = () => {
         if (apiIsAbort(response)) return;
         setIsExpired(true);
       }
-      messageApi.success("Your token has been refreshed");
       const authPayload = { ...auth, expired: response.data?.expired };
       setAuth(authPayload);
       localStorage.setItem(localStorageKey.AUTH, JSON.stringify(authPayload));

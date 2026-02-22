@@ -69,6 +69,9 @@ export const resetPassword = async (data: AuthResetPassword) => {
 
 export const logout = async () => {
   const response = await FetchClient.Post<any, any>(authApiPaths.logout, null, "logout");
-  if (response.success) localStorage.removeItem(localStorageKey.AUTH);
+  if (response.success) {
+     localStorage.removeItem(localStorageKey.AUTH)
+     localStorage.removeItem(localStorageKey.BALANCES)
+  };
   return response;
 };
