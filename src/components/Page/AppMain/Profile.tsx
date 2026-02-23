@@ -55,7 +55,7 @@ const SideProfile: FC<SideProfileProps> = ({ user }) => {
   return (
     <div className="flex flex-col items-center">
       <Avatar size={80}>
-        <Image />
+        <Image src={info.image?.path} />
       </Avatar>
       <Space aligns="middle">
         <Paragraph rootClassName="my-5!" size={15}>
