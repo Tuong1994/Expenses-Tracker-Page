@@ -38,7 +38,9 @@ const SideProfile: FC<SideProfileProps> = ({ user }) => {
     }
   };
 
-  useEffect(() => getBalances(), []);
+  useEffect(() => {
+    getBalances();
+  }, [isError]);
 
   const handleLogout = () => onLogout();
 

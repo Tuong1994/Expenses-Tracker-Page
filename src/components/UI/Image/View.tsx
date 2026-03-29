@@ -54,7 +54,7 @@ const ImageView: ForwardRefRenderFunction<HTMLImageElement, ImageViewProps> = (
           <AiOutlineEye
             size={20}
             className="actions-icon"
-            onClick={() => setPopup({ ...popup, url: src, open: true })}
+            onClick={() => setPopup({ ...popup, url: String(src), open: true })}
           />
           {hasRemove && <BsTrash size={20} className="actions-icon" onClick={onRemove} />}
         </div>
