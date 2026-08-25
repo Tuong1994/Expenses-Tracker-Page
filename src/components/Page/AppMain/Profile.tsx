@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import { Avatar, Image, Typography, Loading, Button, Space, Tooltip } from "@/components/UI";
 import { FaPowerOff, FaWallet } from "react-icons/fa";
 import { ApiResponse } from "@/services/type";
@@ -11,7 +11,7 @@ import { routePaths } from "@/common/constant/routers";
 import { useTranslations } from "next-intl";
 import useLayout from "@/components/UI/Layout/useLayout";
 import useLogout from "@/features/auth/hooks/useLogout";
-import localStorageKey from "@/common/constant/storage";
+import useDashboardStore from "@/store/DashboardStore";
 import utils from "@/utils";
 
 const { Paragraph } = Typography;
@@ -25,30 +25,15 @@ interface SideProfileProps {
 const SideProfile: FC<SideProfileProps> = ({ user }) => {
   const t = useTranslations();
 
+  const balances = useDashboardStore(state => state.balances)
+
   const pathname = usePathname();
 
   const { layoutValue } = useLayout();
 
   const { isLoading, mutate: onLogout } = useLogout();
 
-  const [balances, setBalances] = useState<number | null>(null);
-
   const isError = !user || user === null || !user.success;
-
-  const getBalances = () => {
-    if (typeof window === "undefined") return setBalances(0);
-    const stored = localStorage.getItem(localStorageKey.BALANCES);
-    if (!stored) return setBalances(0);
-    try {
-      setBalances(JSON.parse(stored));
-    } catch (error) {
-      setBalances(0);
-    }
-  };
-
-  useEffect(() => {
-    getBalances();
-  }, [isError]);
 
   const handleLogout = () => onLogout();
 

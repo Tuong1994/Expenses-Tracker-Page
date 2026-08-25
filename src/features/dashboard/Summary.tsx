@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl";
 import { StatisticSummary } from "@/services/dashboard/type";
 import { ApiResponse } from "@/services/type";
 import ErrorMessage from "@/components/Page/ErrorMessage";
-import localStorageKey from "@/common/constant/storage";
+import useDashboardStore from "@/store/DashboardStore";
 import utils from "@/utils";
 
 const { FlexRow, FlexCol } = Flex;
@@ -20,18 +20,17 @@ interface SummaryProps {
 const Summary: FC<SummaryProps> = ({ summary }) => {
   const t = useTranslations("dashboard");
 
+  const setBalances = useDashboardStore((state) => state.setBalances);
+
   const isError = !summary || summary === null || !summary.success;
 
-  if (isError) {
-    return <ErrorMessage>{t("error.summary")}</ErrorMessage>;
-  }
+  if (isError) return <ErrorMessage>{t("error.summary")}</ErrorMessage>;
 
   const { data } = summary;
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    localStorage.setItem(localStorageKey.BALANCES, JSON.stringify(data.totalBalance));
-  }, []);
+    setBalances(data.totalBalance);
+  }, [data]);
 
   return (
     <FlexRow rootClassName="mb-5!" justify="between" aligns="middle">
