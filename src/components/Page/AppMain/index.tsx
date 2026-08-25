@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, ForwardRefRenderFunction, ReactNode } from "react";
+import { forwardRef, ForwardRefRenderFunction, ReactNode, useEffect } from "react";
 import { Divider, Layout, Section } from "@/components/UI";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ApiResponse } from "@/services/type";
@@ -9,6 +9,7 @@ import AppRefreshToken from "./AppRefreshToken";
 import Header from "./Header";
 import Profile from "./Profile";
 import Menu from "./Menu";
+import useUserStore from "@/store/UserStore";
 
 const { Container, Side, Body, Content } = Layout;
 
@@ -28,6 +29,15 @@ const queryClient = new QueryClient({
 });
 
 const AppMain: ForwardRefRenderFunction<HTMLDivElement, AppMainProps> = ({ children, user, isAuth }, ref) => {
+  const setUser = useUserStore(state => state.setUser)
+
+  const isError = !user || user === null || !user.success;
+
+  useEffect(() => {
+    if(isError) return;
+    setUser(user.data)
+  }, [user])
+
   return (
     <QueryClientProvider client={queryClient}>
       <AppRefreshToken>

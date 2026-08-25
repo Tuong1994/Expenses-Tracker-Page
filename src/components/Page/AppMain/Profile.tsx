@@ -1,10 +1,14 @@
 "use client";
 
 import { FC, useEffect, useState } from "react";
-import { Avatar, Image, Typography, Loading, Button, Space } from "@/components/UI";
+import { Avatar, Image, Typography, Loading, Button, Space, Tooltip } from "@/components/UI";
 import { FaPowerOff, FaWallet } from "react-icons/fa";
 import { ApiResponse } from "@/services/type";
 import { User } from "@/services/user/type";
+import { PiPen } from "react-icons/pi";
+import { Link, usePathname } from "@/i18n/navigation";
+import { routePaths } from "@/common/constant/routers";
+import { useTranslations } from "next-intl";
 import useLayout from "@/components/UI/Layout/useLayout";
 import useLogout from "@/features/auth/hooks/useLogout";
 import localStorageKey from "@/common/constant/storage";
@@ -19,6 +23,10 @@ interface SideProfileProps {
 }
 
 const SideProfile: FC<SideProfileProps> = ({ user }) => {
+  const t = useTranslations();
+
+  const pathname = usePathname();
+
   const { layoutValue } = useLayout();
 
   const { isLoading, mutate: onLogout } = useLogout();
@@ -45,9 +53,11 @@ const SideProfile: FC<SideProfileProps> = ({ user }) => {
   const handleLogout = () => onLogout();
 
   const logoutButton = (
-    <Button ghost color={layoutValue.layoutColor} loading={isLoading} onClick={handleLogout}>
-      <FaPowerOff size={18} />
-    </Button>
+    <Tooltip label={t("auth.logout")}>
+      <Button ghost color={layoutValue.layoutColor} loading={isLoading} onClick={handleLogout}>
+        <FaPowerOff />
+      </Button>
+    </Tooltip>
   );
 
   if (isError) return logoutButton;
@@ -63,6 +73,15 @@ const SideProfile: FC<SideProfileProps> = ({ user }) => {
         <Paragraph rootClassName="my-5!" size={15}>
           {info.fullName}
         </Paragraph>
+        {pathname !== routePaths.USER && (
+          <Tooltip label={t("common.actions.edit")}>
+            <Link href={routePaths.USER}>
+              <Button ghost color={layoutValue.layoutColor}>
+                <PiPen />
+              </Button>
+            </Link>
+          </Tooltip>
+        )}
         {logoutButton}
       </Space>
       {balances === null ? (

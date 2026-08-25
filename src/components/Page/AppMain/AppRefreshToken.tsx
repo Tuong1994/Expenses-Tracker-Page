@@ -1,7 +1,8 @@
 "use client";
 
 import { FC, ReactNode, useEffect, useState } from "react";
-import ExpiredSessionModal from "./ExpiredSessionModal";
+import { useTranslations } from "next-intl";
+import ExpiredSessionModal from "../ExpiredSessionModal";
 import useRefreshToken from "@/features/auth/hooks/useRefreshToken";
 import useAuthStore from "@/store/AuthStore";
 import useLogout from "@/features/auth/hooks/useLogout";
@@ -11,6 +12,8 @@ interface AppRefreshTokenProps {
 }
 
 const AppRefreshToken: FC<AppRefreshTokenProps> = ({ children }) => {
+  const t = useTranslations("auth");
+
   const [auth] = useAuthStore((state) => [state.auth]);
 
   const { isExpired, mutate: onRefreshToken } = useRefreshToken();
@@ -57,7 +60,7 @@ const AppRefreshToken: FC<AppRefreshTokenProps> = ({ children }) => {
   return (
     <>
       {children}
-      <ExpiredSessionModal open={openModal} okButtonProps={{ loading: isLoading }} onOk={handleLogout} />
+      <ExpiredSessionModal open={openModal} isLoading={isLoading} note={t("note")} onOk={handleLogout} />
     </>
   );
 };

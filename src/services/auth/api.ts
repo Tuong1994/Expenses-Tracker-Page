@@ -16,7 +16,7 @@ import FetchClient from "../fetch.client";
 
 export const signIn = async (data: AuthSignIn) => {
   const response = await FetchClient.Post<AuthSignIn, Auth>(authApiPaths.signIn, data, "signIn");
-  if(response.data) localStorage.setItem(localStorageKey.AUTH, JSON.stringify(response.data))
+  if (response.data) localStorage.setItem(localStorageKey.AUTH, JSON.stringify(response.data));
   return response;
 };
 
@@ -40,9 +40,9 @@ export const refresh = async () => {
   return response;
 };
 
-export const changePassword = async (query: ApiQuery, data: AuthChangePassword) => {
+export const changePassword = async (data: AuthChangePassword) => {
   const response = await FetchClient.Post<AuthChangePassword, any>(
-    authApiPaths.changePassword + getApiQuery(query),
+    authApiPaths.changePassword,
     data,
     "changePassword"
   );
@@ -70,8 +70,8 @@ export const resetPassword = async (data: AuthResetPassword) => {
 export const logout = async () => {
   const response = await FetchClient.Post<any, any>(authApiPaths.logout, null, "logout");
   if (response.success) {
-     localStorage.removeItem(localStorageKey.AUTH)
-     localStorage.removeItem(localStorageKey.BALANCES)
-  };
+    localStorage.removeItem(localStorageKey.AUTH);
+    localStorage.removeItem(localStorageKey.BALANCES);
+  }
   return response;
 };

@@ -16,7 +16,7 @@ export const getTransactions = async (query: ApiQuery) => {
   return response;
 };
 
-export const getTrasaction = async (query: ApiQuery) => {
+export const getTransaction = async (query: ApiQuery) => {
   const response = await FetchServer.Get<Transaction>(
     transactionApiPaths.detail + getApiQuery(query),
     "getTransaction"

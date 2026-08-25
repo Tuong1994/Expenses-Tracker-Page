@@ -17,6 +17,8 @@ interface SideMenuProps {}
 const SideMenu: FC<SideMenuProps> = () => {
   const t = useTranslations("common.menu");
 
+  const pathname = usePathname()
+
   const items: MenuItems = [
     {
       id: "dashboard",
@@ -38,7 +40,7 @@ const SideMenu: FC<SideMenuProps> = () => {
     },
   ];
 
-  return <Menu type="vertical" items={items} defaultActiveId={["dashboard"]} />;
+  return <Menu type="vertical" items={items} defaultActiveId={pathname !== routePaths.USER ? ["dashboard"] : []} />;
 };
 
 export default SideMenu;

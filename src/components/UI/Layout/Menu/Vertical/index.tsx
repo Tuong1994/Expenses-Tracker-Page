@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { CSSProperties, ForwardRefRenderFunction, useContext, useState, forwardRef, useEffect } from "react";
 import { MenuItems } from "../type";
@@ -41,6 +41,10 @@ const MenuVertical: ForwardRefRenderFunction<HTMLDivElement, MenuVerticalProps> 
   const className = utils.formatClassName("menu-vertical", themeClassName, colorClassName, rootClassName);
 
   useEffect(() => {
+    if (!defaultActiveId.length) {
+      sessionStorage.removeItem(STORAGE_KEY);
+      return setActiveId([]);
+    }
     if (!sessionStorage.getItem(STORAGE_KEY))
       return setActiveId(defaultActiveId.length ? defaultActiveId : []);
     const id: string[] = JSON.parse(sessionStorage.getItem(STORAGE_KEY) ?? "");
