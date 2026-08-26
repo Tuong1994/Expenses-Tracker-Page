@@ -1,9 +1,7 @@
 import { ApiQuery } from "./type";
 import { ApiResponse, ResponseError } from "./type";
 
-// const BASE_URL = process.env.NODE_ENV === "development" ? "http://localhost:5000/" : "";
-
-export const BASE_URL = "http://localhost:5000/";
+export const BASE_URL = process.env.NODE_ENV === "development" ? "http://localhost:5000/" : "https://expenese-tracker-api.onrender.com";
 
 export const HttpStatus = {
   BAD_REQUEST: 400,
