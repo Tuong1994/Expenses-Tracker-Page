@@ -4,8 +4,16 @@ import createNextIntlPlugin from "next-intl/plugin";
 const nextConfig: NextConfig = {
   /* config options here */
   eslint: {
-    ignoreDuringBuilds: true
-  }
+    ignoreDuringBuilds: true,
+  },
+  async rewrites() {
+    return [
+      {
+        source: "/api/:path*",
+        destination: "https://expenese-tracker-api.onrender.com/:path*", // backend thật
+      },
+    ];
+  },
 };
 
 const withNextIntl = createNextIntlPlugin();
