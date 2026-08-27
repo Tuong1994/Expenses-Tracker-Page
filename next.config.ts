@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: "https://expenese-tracker-api.onrender.com/:path*", // backend thật
+        destination: "https://expenese-tracker-api.onrender.com/api/:path*", // giữ /api
       },
     ];
   },
