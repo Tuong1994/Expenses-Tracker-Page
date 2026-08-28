@@ -31,6 +31,10 @@ const DashboardPage: NextPage<DashboardPageProps> = async ({ searchParams, local
 
   const apiQuery = { langCode: locale as ELang };
 
+  if (!params.startDate || !params.endDate) {
+    return redirect({ href: getApiQuery(reqBody), locale });
+  }
+
   const [summaryResult, totalExpensesResult, balanceResult, transactionsResult] = await Promise.allSettled([
     getSummary(reqBody),
     getTotalExpenses(apiQuery, reqBody),
@@ -38,9 +42,7 @@ const DashboardPage: NextPage<DashboardPageProps> = async ({ searchParams, local
     getRecentTransactions(apiQuery),
   ]);
 
-  if (!params.startDate || !params.endDate) {
-    return redirect({ href: getApiQuery(reqBody), locale });
-  }
+  console.log(summaryResult)
 
   return (
     <>

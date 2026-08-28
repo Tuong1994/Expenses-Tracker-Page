@@ -11,7 +11,7 @@ export const getSummary = async (statistic: StatisticReqBody) => {
   const response = await FetchServer.Post<StatisticReqBody, StatisticSummary>(
     statisticApiPaths.summary,
     statistic,
-    "getSummary"
+    { cache: "no-store" }
   );
   return response;
 };
@@ -20,7 +20,7 @@ export const getTotalExpenses = async (query: ApiQuery, statistic: StatisticReqB
   const response = await FetchServer.Post<StatisticReqBody, StatisticTotalExpense[]>(
     statisticApiPaths.totalExpenses + getApiQuery(query),
     statistic,
-    "getTotalExpenses"
+    { cache: "no-store" }
   );
   return response;
 };
@@ -29,7 +29,7 @@ export const getBalances = async (statistic: StatisticReqBody) => {
   const response = await FetchServer.Post<StatisticReqBody, StatisticBalance>(
     statisticApiPaths.balances,
     statistic,
-    "getBalances"
+    { cache: "no-store" }
   );
   return response;
 };
@@ -37,7 +37,7 @@ export const getBalances = async (statistic: StatisticReqBody) => {
 export const getRecentTransactions = async (query: ApiQuery) => {
   const response = await FetchServer.Get<Transaction[]>(
     statisticApiPaths.recentTransactions + getApiQuery(query),
-    "getRecentTransactions"
+    { cache: "no-store" }
   );
   return response;
 };
