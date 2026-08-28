@@ -42,8 +42,6 @@ const DashboardPage: NextPage<DashboardPageProps> = async ({ searchParams, local
     getRecentTransactions(apiQuery),
   ]);
 
-  console.log(summaryResult)
-
   return (
     <>
       <PageTitle
