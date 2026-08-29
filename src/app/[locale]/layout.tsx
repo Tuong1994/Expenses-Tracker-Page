@@ -9,9 +9,12 @@ import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
 import { cookies } from "next/headers";
 import { getUser } from "@/services/user/api";
+import { checkConnection } from "@/services/global/api";
 import { ELang } from "@/common/enum";
 import AppMain from "@/components/Page/AppMain";
+import AppError from "@/components/Page/AppMain/AppError";
 import FlexProvider from "@/components/UI/Flex/Provider";
+import NextTopLoader from "nextjs-toploader";
 import cookieKey from "@/common/constant/cookies";
 import "@/style/globals.css";
 import "@/style/main.scss";
@@ -56,6 +59,8 @@ export default async function RootLayout({
 
   const isAuth = Boolean(tokenPayload);
 
+  const isConnected = await checkConnection();
+
   if (isAuth) user = await getUser({ langCode: locale as ELang });
 
   // Enable static rendering
@@ -66,8 +71,9 @@ export default async function RootLayout({
       <body className={poppins.className}>
         <NextIntlClientProvider>
           <FlexProvider>
+            <NextTopLoader color="#10b981" height={3} showSpinner={false} />
             <AppMain user={user} isAuth={isAuth}>
-              {children}
+              {isConnected ? children : <AppError />}
               <div id="portal"></div>
               <ToastMessage />
             </AppMain>

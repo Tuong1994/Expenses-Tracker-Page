@@ -145,7 +145,8 @@
         "update": "Lỗi! Không thể cập nhật",
         "remove": "Lỗi! Không thể xóa",
         "logout": "Lỗi đăng xuất",
-        "api": "Đã xảy ra lỗi"
+        "api": "Đã xảy ra lỗi",
+        "app": "Ứng dụng này đang chạy trên gói máy chủ miễn phí. Sau một thời gian không hoạt động, máy chủ sẽ “ngủ” và cần vài giây để khởi động lại. Vui lòng chờ trong giây lát và thử tải lại trang. Cảm ơn bạn đã kiên nhẫn!"
       }
     }
   }
